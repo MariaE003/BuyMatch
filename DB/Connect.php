@@ -12,10 +12,10 @@ class Connect{
             if (self::$pdo===null) {
                 self::$pdo=new PDO("mysql:host=".self::$host.";dbname=".self::$dbname,self::$username,self::$password);
                 self::$pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-                echo 'connexion reussite';
+                // echo 'connexion reussite';
                 return self::$pdo;
             }
-            echo 'connexion reussite';
+            // echo 'connexion reussite';
             return self::$pdo;
         }catch(PDOException $e){
             die("connection faild:".$e->getMessage());
@@ -25,6 +25,6 @@ class Connect{
 }
 
 
-$pdoo=Connect::connect();
+// $pdoo=Connect::connect1();
 
 ?>

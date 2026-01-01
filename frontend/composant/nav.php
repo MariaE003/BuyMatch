@@ -1,0 +1,22 @@
+<nav class="glass sticky top-0 z-50 px-6 py-4 border-b border-white/5">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center rotate-3 shadow-lg shadow-indigo-500/20">
+                    <i class="fas fa-trophy text-white"></i>
+                </div>
+                <span class="font-league text-2xl font-black italic">ELITE<span class="text-indigo-500">STADIUM</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.2em]">
+                <a href="index.php" class="text-indigo-400">Matchs</a>
+                <a href="#" class="hover:text-indigo-400 transition">Calendrier</a>
+                <a href="#" class="hover:text-indigo-400 transition">Stades</a>
+                <a href="#" class="hover:text-indigo-400 transition">Aide</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="../frontend/auth/login.php" class="text-[10px] font-black uppercase tracking-widest hover:text-indigo-400 transition">Connexion</a>
+                <a href="../frontend/auth/register.php" class="btn-gradient px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20">S'inscrire</a>
+            </div>
+        </div>
+    </nav>
