@@ -53,6 +53,7 @@ if (isset($_POST["envoyer"])) {
             // Envoyer l'email
             // ghanjib email et nom du user
             // 
+            
             $userInfo=new Auth();
             $userInfo1=$userInfo->affichierInfo($usee_id);
             $billet->sendEmail($userInfo1["email"],$userInfo1["nom"], $pdf);      

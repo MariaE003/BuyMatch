@@ -215,7 +215,7 @@ $VentesBrutes=$bill->VentesBrutes();
             <div class="col-span-12 lg:col-span-4 space-y-6">
                 
                 <!-- Users Management Control -->
-                <div class="glass-panel rounded-[2.5rem] p-8 h-fit">
+                <div class="glass-panel rounded-[2.5rem] p-8 pb-10 h-fit">
                     <h3 class="font-league text-lg font-black italic uppercase italic text-indigo-400 mb-6 tracking-widest text-center">Security <span class="text-white">Control</span></h3>
                     <div class="space-y-4">
                         <div class="p-4 bg-white/5 rounded-2xl flex items-center justify-between">
@@ -226,20 +226,20 @@ $VentesBrutes=$bill->VentesBrutes();
                                     <p class="text-[9px] text-slate-500 uppercase font-black italic">Organisateur</p>
                                 </div>
                             </div>
-                            <div class="flex gap-2">
+                            <!-- <div class="flex gap-2">
                                 <button class="w-7 h-7 bg-indigo-500/20 text-indigo-400 rounded-lg text-[10px]"><i class="fas fa-sync"></i></button>
                                 <button class="w-7 h-7 bg-rose-500/20 text-rose-500 rounded-lg text-[10px]"><i class="fas fa-ban"></i></button>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="p-4 bg-white/5 rounded-2xl flex items-center justify-between opacity-50">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"><i class="fas fa-user text-[10px]"></i></div>
                                 <p class="text-[11px] font-bold italic">User_Banned_#09</p>
                             </div>
-                            <button class="text-[9px] font-black uppercase text-indigo-400">Restaurer</button>
+                            <!-- <button class="text-[9px] font-black uppercase text-indigo-400">Restaurer</button> -->
                         </div>
                     </div>
-                    <button class="w-full mt-6 py-4 rounded-2xl border border-dashed border-white/10 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:border-indigo-500 hover:text-indigo-400 transition">Base de données complète</button>
+                    <a href="./GestionUtilisateurs.php" class="w-full mt-6 ml-17  py-4 rounded-2xl border border-dashed border-white/10 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:border-indigo-500 hover:text-indigo-400 transition mt-10">Base de données complète</a>
                 </div>
 
                 <!-- Modération Avis (Bonus Section) -->
