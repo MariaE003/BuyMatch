@@ -1,6 +1,7 @@
 <?php require_once './session.php';
-print_r($_SESSION);
-var_dump($_SESSION);
+// print_r($_SESSION);
+// var_dump($_SESSION);
+// echo $_SESSION["user_id"];
 
 ?>
 

@@ -1,0 +1,91 @@
+<?php
+require_once '../DB/Connect.php';
+require_once 'Categorie.php';
+class MatchEvent{
+    private $id;
+    private $nomEqui1;
+    private $nomEqui2;
+    private $logoEqui1;
+    private $logoEqui2;
+    private $date;
+    private $lieu;
+    private $heure;
+    // private $durre;
+    private $capacite;
+    private $statut;
+
+    private $categorie;//pour objet categorie
+
+    private $pdo;
+    
+    //constructeur recoit un objet du class categorie
+    public function __construct(Categorie $cate){
+        $this->pdo=Connect::connect();
+        $this->categorie=$cate;//
+    }
+
+    public function getId() {return $this->id;}
+    public function getNomEqui1() {return $this->nomEqui1;}
+    public function getNomEqui2() {return $this->nomEqui2;}
+    public function getLogoEqui1() {return $this->logoEqui1;}
+    public function getLogoEqui2() { return $this->logoEqui2;}
+    public function getDate() {return $this->date;}
+    public function getLieu() {return $this->lieu;}
+    public function getHeure() {return $this->heure;}
+    public function getCapacite() {return $this->capacite;}
+    public function getStatut() {return $this->statut;}
+    // public function getCatePrice() {return $this->catePrice;}
+    // public function getCateName() {return $this->cateName;}
+
+
+    // public function setId($id) {$this->id = $id;}
+
+    public function setNomEqui1($nomEqui1) {$this->nomEqui1 = $nomEqui1;}
+    public function setNomEqui2($nomEqui2) {$this->nomEqui2 = $nomEqui2;}
+    public function setLogoEqui1($logoEqui1) {$this->logoEqui1 = $logoEqui1;}
+    public function setLogoEqui2($logoEqui2) {$this->logoEqui2 = $logoEqui2;}
+    public function setDate($date) {$this->date = $date;}
+    public function setLieu($lieu) {$this->lieu = $lieu;}
+    public function setHeure($heure) { $this->heure = $heure;}
+    public function setCapacite($capacite) {$this->capacite = $capacite;}
+    public function setStatut($statut) {$this->statut = $statut;}
+
+    // public function setCateName($cateName) {$this->cateName = $cateName;}
+    // public function setCatePrice($catePrice) {$this->catePrice = $catePrice;}
+
+    public function AffichierMatch($idOrg){
+        $en_attente='en_attente';
+        $req=$this->pdo->prepare("SELECT * from matchs where organisateur_id=? and statut=?");
+        $req->execute([
+            $idOrg,
+            $en_attente
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function AddMatch($idOrg){
+        $req=$this->pdo->prepare("INSERT INTO matchs (Nomequipe1,logoEquipe1,Nomequipe2,logoEquipe2,date,lieu, 
+        heure, nbrPlaceMax, organisateur_id) 
+        VALUES (?,?,?,?,?,?,?,?,?)");
+        $match=$req->execute([
+            $this->getNomEqui1(),$this->getLogoEqui1(),$this->getNomEqui2(),$this->getLogoEqui2(),$this->getDate(),$this->getLieu(),
+            $this->getHeure(),$this->getCapacite(),
+            $idOrg,
+        ]);
+        if (!$match) {
+            return false;
+        }
+        $id_match=$this->pdo->lastInsertId();
+        // if ($this->categorie->AddCategorie($id_match)) {
+            # code...
+            return $this->categorie->AddCategorie($id_match);// utilise la composition (la methode du class Categorie)
+        // }else{
+        //     throw 
+        // }
+        // return $id_match;
+
+    }
+    
+}
+
+?>

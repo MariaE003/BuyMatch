@@ -1,11 +1,11 @@
 <?php
  session_start();
  
- require_once '../../classes/User.php';
+ require_once '../../classes/Auth.php';
 
  if (isset($_POST['connecter'])) {
     if (!empty($_POST['email']) && !empty($_POST['password']) ) {
-        $user=new User();
+        $user=new Auth();
         // les setter modifier
         // $user->setEmail($_POST['email']);
         // $user->setPassword($_POST['password']);

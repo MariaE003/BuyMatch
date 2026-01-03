@@ -1,7 +1,7 @@
 <?php
 require __DIR__.'/../DB/Connect.php';
 // abstract class User{
-class User{
+abstract class User{
     private $id;
     private $nom;
     private $email;
@@ -61,8 +61,13 @@ class User{
         ]);
         $user=$req->fetch(PDO::FETCH_ASSOC);
         if ($user && password_verify($passw,$user['mot_de_passe'])){
+            // pour les variable de session
+            $this->id=$user["id"];
+            $this->email=$user["email"];
+            $this->role=$user["role"];
             return $user;
         }
+
         return false;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 // C:\laragon\www\BuyMatch\DB\Connect.php
 // require_once __DIR__ .'/../../DB/Connect.php';
-require_once '../../classes/User.php';
+require_once '../../classes/Auth.php';
 if (isset($_POST['sinscrire'])) {
     if (!empty($_POST["nom"]) && !empty($_POST["email"]) && !empty($_POST["photo"]) && !empty($_POST["password"])) {
         // echo"hhh";
@@ -12,7 +12,7 @@ if (isset($_POST['sinscrire'])) {
     $password=$_POST["password"];
     $role=$_POST["role"];
 
-    $user=new User();
+    $user=new Auth();
     $user->setNom($nom);
     $user->setEmail($email);
     $user->setImage($image);

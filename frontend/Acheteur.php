@@ -384,7 +384,11 @@ Navbar
 
 
 
+<?php
+require '../session.php';
+$rolePage="acheteur";
 
+?>
 
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
