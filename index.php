@@ -1,8 +1,15 @@
-<?php require_once './session.php';
+<?php 
+require_once './session.php';
+require_once './classes/MatchEvent.php';
 // print_r($_SESSION);
 // var_dump($_SESSION);
 // echo $_SESSION["user_id"];
 
+
+// les match disponible
+$match=new MatchEvent();
+$matchs=$match->Matchs();
+// var_dump($matchs);
 ?>
 
 <!DOCTYPE html>
@@ -102,57 +109,65 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
             <!-- Match Card 1 -->
+            <?php
+                foreach($matchs as $match){
+
+                
+            ?>
             <div class="match-card glass rounded-[2.5rem] overflow-hidden flex flex-col">
                 <div class="p-8 flex-grow">
-                    <div class="flex justify-between items-center mb-10">
-                        <span class="bg-indigo-500/10 text-indigo-400 text-[10px] px-3 py-1 rounded-full font-black uppercase">J-12</span>
-                        <div class="flex gap-1 text-[8px] text-yellow-500">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
 
                     <div class="flex justify-between items-center gap-4 mb-8">
                         <div class="text-center flex-1">
-                            <div class="w-16 h-16 mx-auto mb-3 glass rounded-2xl flex items-center justify-center p-3">
-                                <i class="fas fa-shield-halved text-2xl text-indigo-400 team-logo"></i>
+                            <div class="w-16 h-16 mx-auto mb-3 glass rounded-2xl overflow-hidden">
+                                <img 
+                                    src="<?= $match["logoEquipe1"] ?>" 
+                                    alt="logo"
+                                    class="w-full h-full "
+                                >
                             </div>
-                            <span class="font-league text-[10px] font-bold block">RAJA CA</span>
+                            <span class="font-league text-[10px] font-bold block">
+                                <?= $match["Nomequipe1"] ?>
+                            </span>
                         </div>
+
                         <div class="text-center">
                             <span class="font-league text-2xl font-black italic text-white/20">VS</span>
                         </div>
                         <div class="text-center flex-1">
-                            <div class="w-16 h-16 mx-auto mb-3 glass rounded-2xl flex items-center justify-center p-3">
-                                <i class="fas fa-shield-halved text-2xl text-red-500 team-logo"></i>
+                            <div class="w-16 h-16 mx-auto mb-3 glass rounded-2xl flex items-center justify-center p-[1.75px]">
+                                <!-- <i class="fas fa-shield-halved text-2xl text-red-500 team-logo"></i> -->
+                                <img class="bg-contain team-logo" src="<?=$match["logoEquipe2"]?>" alt="none">
                             </div>
-                            <span class="font-league text-[10px] font-bold block">WYDAD AC</span>
+                            <span class="font-league text-[10px] font-bold block"><?=$match["Nomequipe2"]?></span>
                         </div>
                     </div>
 
                     <div class="space-y-3 text-center md:text-left">
                         <div class="text-xs font-semibold text-slate-300">
-                            <i class="far fa-calendar-alt text-indigo-500 mr-2"></i> 25 Décembre 2024 • 20:00
+                            <i class="far fa-calendar-alt text-indigo-500 mr-2"></i> <?=$match["date"]?> • <?=substr($match["heure"],0,5);?>
                         </div>
                         <div class="text-xs font-semibold text-slate-300">
-                            <i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i> Stade Mohammed V, Casablanca
+                            <i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i><?=$match["lieu"]?>
                         </div>
                     </div>
                 </div>
 
                 <div class="p-8 bg-white/5 border-t border-white/5 flex items-center justify-between">
-                    <div>
+                    <!-- <div>
                         <span class="text-[10px] font-black text-slate-500 uppercase block">À partir de</span>
                         <span class="text-xl font-black italic font-league tracking-tighter">50 DH</span>
-                    </div>
-                    <a href="./frontend/detail-match.php" class="bg-white text-black px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition">
+                    </div> -->
+                    <a href="./frontend/detail-match.php?id=<?=$match["id"]?>" class="bg-white text-black px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition">
                         Détails
                     </a>
                 </div>
             </div>
+            <?php } ?>
 
             <!-- Répéter les cartes (Match Card 2, 3...) -->
             <!-- Match Card 2 (Exemple simplifié pour remplissage) -->
-            <div class="match-card glass rounded-[2.5rem] overflow-hidden flex flex-col">
+            <!-- <div class="match-card glass rounded-[2.5rem] overflow-hidden flex flex-col">
                 <div class="p-8 flex-grow">
                     <div class="flex justify-between items-center mb-10">
                         <span class="bg-green-500/10 text-green-400 text-[10px] px-3 py-1 rounded-full font-black uppercase">J-15</span>
@@ -175,7 +190,7 @@
                     </div>
                     <a href="#" class="bg-white text-black px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition">Détails</a>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </main>

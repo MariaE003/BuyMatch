@@ -1,3 +1,43 @@
+<?php
+
+require '../session.php';
+$rolePage="acheteur";
+
+require "../classes/MatchEvent.php";
+require "../classes/Billet.php";
+
+$usee_id=$_SESSION["user_id"];
+$idMatch=$_GET["id"];
+
+
+$matchs=new MatchEvent();
+$match=$matchs->findMatchById($idMatch);
+$cate=$matchs->CatduMatch($idMatch);
+
+
+if (isset($_POST["envoyer"])) {
+    if (!empty($_POST["quantity"]) && !empty($_POST["category"])) {
+        # numero_place, qr_code,quantite, user_id, match_id, categorie_id
+
+        // idcat
+        $categorie_id=$_POST["category"];
+        echo $categorie_id;
+        $qt=(int) $_POST["quantity"];
+        // var_dump($qt);
+        for ($i=0; $i <$qt ; $i++) { 
+        $billet=new Billet();
+        $NumPlace=$billet->getLastPlace($categorie_id,$idMatch);
+        $billet->genererIdCode($usee_id,$idMatch,$categorie_id,$i);//i pour eviter duplicate
+        $billet->setNumeroPlace($NumPlace);
+        $billet->setQuantite($_POST["quantity"]);
+
+        $billet->acheterBillets($usee_id,$idMatch,$categorie_id);
+        }
+    }
+    // echo $_POST["quantity"],$_POST["category"];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr" class="h-full">
 <head>
@@ -70,7 +110,7 @@
                 <div class="w-32 h-32 md:w-48 md:h-48 glass rounded-full flex items-center justify-center p-8 mx-auto border-2 border-indigo-500/30">
                     <i class="fas fa-shield-halved text-6xl md:text-8xl text-indigo-500 drop-shadow-[0_0_15px_rgba(99,102,241,0.5)]"></i>
                 </div>
-                <h2 class="font-league text-2xl md:text-4xl font-black italic">Raja CA</h2>
+                <h2 class="font-league text-2xl md:text-4xl font-black italic"><?= $match["Nomequipe1"] ?></h2>
             </div>
 
             <!-- VS Divider -->
@@ -86,7 +126,7 @@
                 <div class="w-32 h-32 md:w-48 md:h-48 glass rounded-full flex items-center justify-center p-8 mx-auto border-2 border-red-500/30">
                     <i class="fas fa-shield-halved text-6xl md:text-8xl text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]"></i>
                 </div>
-                <h2 class="font-league text-2xl md:text-4xl font-black italic">Wydad AC</h2>
+                <h2 class="font-league text-2xl md:text-4xl font-black italic"><?= $match["Nomequipe2"] ?></h2>
             </div>
         </div>
     </header>
@@ -103,19 +143,19 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                     <div>
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Date</p>
-                        <p class="text-sm font-bold"><i class="far fa-calendar text-indigo-500 mr-2"></i> 25 Déc. 2024</p>
+                        <p class="text-sm font-bold"><i class="far fa-calendar text-indigo-500 mr-2"></i> <?= $match["date"] ?></p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Coup d'envoi</p>
-                        <p class="text-sm font-bold"><i class="far fa-clock text-indigo-500 mr-2"></i> 20:00 (GMT+1)</p>
+                        <p class="text-sm font-bold"><i class="far fa-clock text-indigo-500 mr-2"></i> <?= substr($match["heure"],0,5) ?></p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Lieu</p>
-                        <p class="text-sm font-bold"><i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i> Casablanca</p>
+                        <p class="text-sm font-bold"><i class="fas fa-map-marker-alt text-indigo-500 mr-2"></i> <?= $match["lieu"] ?></p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Durée</p>
-                        <p class="text-sm font-bold"><i class="fas fa-stopwatch text-indigo-500 mr-2"></i> 90 MIN</p>
+                        <p class="text-sm font-bold"><i class="fas fa-stopwatch text-indigo-500 mr-2"></i><?= $match["duree"] ?> MIN</p>
                     </div>
                 </div>
             </div>
@@ -126,47 +166,35 @@
                     <h3 class="font-league text-2xl font-black italic uppercase tracking-tighter">Réserver vos <span class="text-indigo-500">Places</span></h3>
                     <span class="text-[10px] bg-white/10 px-4 py-1 rounded-full font-bold uppercase text-slate-400">Max 4 billets</span>
                 </div>
-
-                <form action="process_booking.php" method="POST" class="space-y-10">
+                
+                <form  method="POST" class="space-y-10" >
                     <!-- Sélection de Catégorie -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Cat 1 -->
+                         <?php foreach($cate as $categ){  ?>
                         <label class="category-card glass p-6 rounded-3xl cursor-pointer transition relative group border-2 border-transparent">
-                            <input type="radio" name="category" value="vip" data-price="500" class="hidden">
-                            <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Premium</p>
-                            <p class="font-league text-xl font-black italic">VIP Gold</p>
-                            <p class="text-indigo-400 font-black mt-4">500 DH</p>
-                            <i class="fas fa-crown absolute top-6 right-6 text-indigo-500 opacity-20 group-hover:opacity-100 transition"></i>
+                            <input type="radio" name="category"  value="<?=$categ["id"]?>" id="<?=$categ["id"]?>" data-price="<?=$categ["prix"]?>" class="hidden">
+                            <!-- <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Premium</p> -->
+                            <p class="font-league text-xl font-black italic"><?=$categ["label"]?></p>
+                            <p class="text-indigo-400 font-black mt-4"><?=$categ["prix"]?></p>
+                            <!-- <i class="fas fa-crown absolute top-6 right-6 text-indigo-500 opacity-20 group-hover:opacity-100 transition"></i> -->
                         </label>
-                        <!-- Cat 2 -->
-                        <label class="category-card glass p-6 rounded-3xl cursor-pointer transition relative group border-2 border-transparent">
-                            <input type="radio" name="category" value="standard" data-price="100" class="hidden">
-                            <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Tribune</p>
-                            <p class="font-league text-xl font-black italic">Catégorie 1</p>
-                            <p class="text-indigo-400 font-black mt-4">100 DH</p>
-                        </label>
-                        <!-- Cat 3 -->
-                        <label class="category-card glass p-6 rounded-3xl cursor-pointer transition relative group border-2 border-transparent">
-                            <input type="radio" name="category" value="eco" data-price="50" class="hidden">
-                            <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Populaire</p>
-                            <p class="font-league text-xl font-black italic">Catégorie 2</p>
-                            <p class="text-indigo-400 font-black mt-4">50 DH</p>
-                        </label>
+                        <?php } ?>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 ">
                         <div>
-                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-4">Nombre de billets</label>
+                            <label class="text-[10px] font-black text-slate-500 uppercase block mb-4 ">Nombre de billets</label>
                             <div class="flex items-center gap-4 bg-white/5 p-2 rounded-2xl border border-white/5 w-fit">
                                 <button type="button" onclick="changeQty(-1)" class="w-10 h-10 rounded-xl glass hover:bg-indigo-600 transition">-</button>
                                 <input type="number" id="qty" name="quantity" value="1" min="1" max="4" readonly class="bg-transparent w-12 text-center font-bold outline-none">
                                 <button type="button" onclick="changeQty(1)" class="w-10 h-10 rounded-xl glass hover:bg-indigo-600 transition">+</button>
                             </div>
                         </div>
-                        <div>
+                        <!-- <div>
                             <label class="text-[10px] font-black text-slate-500 uppercase block mb-4">Place numérotée (Optionnel)</label>
                             <input type="text" placeholder="Ex: B-24" class="w-full bg-white/5 border border-white/5 rounded-2xl p-4 outline-none focus:border-indigo-500 transition font-bold uppercase">
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -174,7 +202,7 @@
                             <p class="text-xs text-slate-500 font-bold uppercase italic">Total à payer</p>
                             <p id="totalPrice" class="font-league text-4xl font-black italic tracking-tighter">0 DH</p>
                         </div>
-                        <button type="submit" class="btn-gradient px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl w-full md:w-auto">
+                        <button type="submit" name="envoyer" class="btn-gradient px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl w-full md:w-auto">
                             Confirmer la réservation
                         </button>
                     </div>
@@ -196,8 +224,8 @@
                         </button>
                     </div>
                 </div>
-                <p class="text-sm font-bold uppercase italic">Stade Mohammed V</p>
-                <p class="text-xs text-slate-500 mt-1">Capacité : 45,000 Spectateurs</p>
+                <p class="text-sm font-bold uppercase italic"><?=$match["lieu"]?></p>
+                <p class="text-xs text-slate-500 mt-1">Capacité : <?=$match["nbrPlaceMax"]?> Spectateurs</p>
             </div>
 
             <!-- Notes & Avis (Bonus Section) -->
@@ -223,7 +251,7 @@
                     </div>
                     <!-- Formulaire d'avis (si match fini - conditionnel en PHP) -->
                     <div class="pt-6 border-t border-white/5">
-                        <a href="./matchCommentaires.php" class="text-[10px] font-black text-slate-500 uppercase mb-4 text-center italic underline">Laisser un commentaire après le match</a>
+                        <a href="./matchCommentaires.php?id=<?=$idMatch?>" class="text-[10px] font-black text-slate-500 uppercase mb-4 text-center italic underline">Laisser un commentaire après le match</a>
                     </div>
                 </div>
             </div>
@@ -244,7 +272,7 @@
             const qtyInput = document.getElementById('qty');
             let current = parseInt(qtyInput.value);
             current += val;
-            if (current >= 1 && current <= 4) {
+            if (current >= 1 && current <= 6) {
                 qtyInput.value = current;
                 updateTotal();
             }

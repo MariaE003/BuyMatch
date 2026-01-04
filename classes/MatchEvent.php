@@ -1,5 +1,5 @@
 <?php
-require_once '../DB/Connect.php';
+require_once __DIR__.'/../DB/Connect.php';
 require_once 'Categorie.php';
 require_once 'Commentaire.php';
 
@@ -54,13 +54,23 @@ class MatchEvent{
 
     // public function setCateName($cateName) {$this->cateName = $cateName;}
     // public function setCatePrice($catePrice) {$this->catePrice = $catePrice;}
-
+    
+    // les match de l'organisateur
     public function AffichierMatch($idOrg){
         $en_attente='en_attente';
         $req=$this->pdo->prepare("SELECT * from matchs where organisateur_id=? and statut=?");
         $req->execute([
             $idOrg,
             $en_attente
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // les match accepter par admin for achteur
+    public function Matchs(){
+        $valide='valide';
+        $req=$this->pdo->prepare("SELECT * from matchs where statut=?");
+        $req->execute([
+            $valide
         ]);
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -81,14 +91,9 @@ class MatchEvent{
             return false;
         }
         $id_match=$this->pdo->lastInsertId();
-        // if ($this->categorie->AddCategorie($id_match)) {
-            # code...
+        
             $this->categorie->AddCategorie($id_match);// utilise la composition (la methode du class Categorie)
             return true;
-        // }else{
-        //     throw 
-        // }
-        // return $id_match;
     }
     public function findMatchById($id){
         $req=$this->pdo->prepare("SELECT * from matchs where id=?");
@@ -96,6 +101,16 @@ class MatchEvent{
             $id
         ]);
         return $req->fetch(PDO::FETCH_ASSOC);
+    }
+    // les categorie par match
+    public function CatduMatch($id){
+        $req=$this->pdo->prepare("SELECT c.id,c.prix,c.label from matchs m
+        inner join categories c on c.match_id=m.id
+         where m.id=?");
+        $req->execute([
+            $id
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function AffichierComemntaire(Commentaire $comment,$id_match){

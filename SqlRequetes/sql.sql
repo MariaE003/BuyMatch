@@ -90,7 +90,7 @@ INSERT INTO categories (label, prix, match_id) VALUES
 ('Economique', 50.00, 1);
 
 
-INSERT INTO billets (numero_place, qr_code, user_id, match_id, categorie_id) VALUES
+INSERT INTO billets (numero_place, id_code, user_id, match_id, categorie_id) VALUES
 (45, 'QR_BILLET_001', 1, 1, 2),
 (46, 'QR_BILLET_002', 1, 1, 2);
 
