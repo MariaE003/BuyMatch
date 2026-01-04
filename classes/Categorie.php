@@ -20,6 +20,9 @@ class Categorie{
     public function AddCategorie($matId){
             $reqCat=$this->pdo->prepare("INSERT INTO categories (label, prix, match_id) 
             VALUES(?, ?, ?)");
+        if (count($this->getCateName())>3) {
+            throw new Exception("vous devais choisir trois categorie au maximum !!");
+        }
         foreach($this->getCateName() as $index=>$cate ){
             $match=$reqCat->execute([
                 $cate,

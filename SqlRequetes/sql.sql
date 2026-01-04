@@ -96,3 +96,8 @@ INSERT INTO billets (numero_place, qr_code, user_id, match_id, categorie_id) VAL
 
 INSERT INTO commentaires (commentaire, user_id, match_id) VALUES
 ('evenement sportif tres organise', 1, 1);
+
+
+
+alter TABLE billets 
+add column quantite int

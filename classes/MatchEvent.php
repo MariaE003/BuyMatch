@@ -1,6 +1,8 @@
 <?php
 require_once '../DB/Connect.php';
 require_once 'Categorie.php';
+require_once 'Commentaire.php';
+
 class MatchEvent{
     private $id;
     private $nomEqui1;
@@ -19,7 +21,7 @@ class MatchEvent{
     private $pdo;
     
     //constructeur recoit un objet du class categorie
-    public function __construct(Categorie $cate){
+    public function __construct(Categorie $cate=null){
         $this->pdo=Connect::connect();
         $this->categorie=$cate;//
     }
@@ -64,6 +66,9 @@ class MatchEvent{
     }
 
     public function AddMatch($idOrg){
+        if ($this->getCapacite()<0 || $this->getCapacite()>2000 ) {
+            throw new Exception("la capacite doit etre inferieure a 2000 !");
+        }
         $req=$this->pdo->prepare("INSERT INTO matchs (Nomequipe1,logoEquipe1,Nomequipe2,logoEquipe2,date,lieu, 
         heure, nbrPlaceMax, organisateur_id) 
         VALUES (?,?,?,?,?,?,?,?,?)");
@@ -78,14 +83,38 @@ class MatchEvent{
         $id_match=$this->pdo->lastInsertId();
         // if ($this->categorie->AddCategorie($id_match)) {
             # code...
-            return $this->categorie->AddCategorie($id_match);// utilise la composition (la methode du class Categorie)
+            $this->categorie->AddCategorie($id_match);// utilise la composition (la methode du class Categorie)
+            return true;
         // }else{
         //     throw 
         // }
         // return $id_match;
-
     }
-    
+    public function findMatchById($id){
+        $req=$this->pdo->prepare("SELECT * from matchs where id=?");
+        $req->execute([
+            $id
+        ]);
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function AffichierComemntaire(Commentaire $comment,$id_match){
+        $req=$this->pdo->prepare("SELECT c.*,u.nom,u.image from commentaires c
+                                inner join users u on u.id=c.user_id  where match_id=?");
+        $req->execute([
+            $id_match
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // le nombredes commentaire par match
+    public function nbrComemntaireMatch($id_match){
+        $req=$this->pdo->prepare("SELECT count(*) as nbr from commentaires where match_id=?");
+        $req->execute([
+            $id_match
+        ]);
+        $nbr=$req->fetch(PDO::FETCH_ASSOC);
+        return $nbr["nbr"] ;
+    }    
 }
 
 ?>

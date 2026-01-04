@@ -4,15 +4,15 @@
         </div>
         
         <nav class="flex flex-col gap-8">
-            <a href="dashboard.php" class="p-4 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(129,140,248,0.1)]" title="Dashboard">
+            <a href="DashboardOrganisateur.php" class="p-4 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(129,140,248,0.1)]" title="Dashboard">
                 <i class="fas fa-chart-line text-xl"></i>
             </a>
-            <a href="matchs.php" class="p-4 rounded-2xl text-slate-500 hover:text-indigo-400 hover:bg-white/5 transition" title="Matchs">
+            <a href="Acheteur.php" class="p-4 rounded-2xl text-slate-500 hover:text-indigo-400 hover:bg-white/5 transition" title="Matchs">
                 <i class="fas fa-futbol text-xl"></i>
             </a>
-            <a href="commentaires.php" class="p-4 rounded-2xl text-slate-500 hover:text-indigo-400 hover:bg-white/5 transition" title="Commentaires">
+            <!-- <a href="commentaires.php" class="p-4 rounded-2xl text-slate-500 hover:text-indigo-400 hover:bg-white/5 transition" title="Commentaires">
                 <i class="fas fa-comments text-xl"></i>
-            </a>
+            </a> -->
             <a href="profil.php" class="p-4 rounded-2xl text-slate-500 hover:text-indigo-400 hover:bg-white/5 transition" title="Profil">
                 <i class="fas fa-id-card text-xl"></i>
             </a>

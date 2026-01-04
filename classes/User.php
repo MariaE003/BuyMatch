@@ -2,14 +2,14 @@
 require __DIR__.'/../DB/Connect.php';
 // abstract class User{
 abstract class User{
-    private $id;
-    private $nom;
-    private $email;
-    private $password;
-    private $image;
-    private $role;
+    protected $id;
+    protected $nom;
+    protected $email;
+    protected $password;
+    protected $image;
+    protected $role;
 
-    private $pdo;
+    protected $pdo;
 
 
     public function getId(){return $this->id;}
@@ -70,6 +70,8 @@ abstract class User{
 
         return false;
     }
+
+   
 }
 
 

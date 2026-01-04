@@ -4,36 +4,41 @@ require '../classes/MatchEvent.php';
 $rolePage = "organisateur";
 
 $id_user = $_SESSION['user_id'];
-
+$erreur='';
 if (isset($_POST["send"])) {
     if (!empty($_POST['NomEqui1']) && !empty($_POST['NomEqui2']) && !empty($_POST['LogoEqui1']) 
         && !empty($_POST['LogoEqui2']) && !empty($_POST['date']) && !empty($_POST['heure']) 
         && !empty($_POST['lieu']) && !empty($_POST['capacite'])&& !empty($_POST["cat_label"]) && !empty($_POST["cat_price"])){
       
         // categorie
-        $categorie=new Categorie();
-        $categorie->setCatePrice($_POST["cat_price"]);
-        $categorie->setCateName($_POST["cat_label"]);
-        // match
-        $creer = new MatchEvent($categorie);
-        $creer->setNomEqui1($_POST['NomEqui1']);
-        $creer->setNomEqui2($_POST['NomEqui2']);
-        $creer->setLogoEqui1($_POST['LogoEqui1']);
-        $creer->setLogoEqui2($_POST['LogoEqui2']);
-        $creer->setDate($_POST['date']);
-        $creer->setLieu($_POST['lieu']);
-        $creer->setHeure($_POST['heure']);
-        $creer->setCapacite($_POST['capacite']);
-
-
-
-        // $idMatch=$creer->AddMatch($id_user);
-        if ($creer->AddMatch($id_user)) {
-            // $creer->AddCategorie($idMatch);
-            header("Location: DashboardOrganisateur.php");
-            exit();
-        }else{
-            echo "<p style='color:red'>Erreur: impossible d'ajouter le match.</p>";
+        try{
+            $categorie=new Categorie();
+            $categorie->setCatePrice($_POST["cat_price"]);
+            $categorie->setCateName($_POST["cat_label"]);
+            // match
+            $creer = new MatchEvent($categorie);
+            $creer->setNomEqui1($_POST['NomEqui1']);
+            $creer->setNomEqui2($_POST['NomEqui2']);
+            $creer->setLogoEqui1($_POST['LogoEqui1']);
+            $creer->setLogoEqui2($_POST['LogoEqui2']);
+            $creer->setDate($_POST['date']);
+            $creer->setLieu($_POST['lieu']);
+            $creer->setHeure($_POST['heure']);
+            $creer->setCapacite($_POST['capacite']);
+    
+    
+    
+            // $idMatch=$creer->AddMatch($id_user);
+            if ($creer->AddMatch($id_user)) {
+                // $creer->AddCategorie($idMatch);
+                header("Location: DashboardOrganisateur.php");
+                exit();
+            }
+            else{
+                echo "<p style='color:red'>Erreur: impossible d'ajouter le match.</p>";
+            }
+        }catch(Exception $e){
+            $erreur = '<div class="p-4 mb-4 text-red-700 bg-red-100 rounded"> rreur :'.$e->getMessage().'</div>';
         }
     }
 }
@@ -43,7 +48,8 @@ if (isset($_POST["send"])) {
 <html lang="fr" class="h-full bg-[#020617]">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,
+     initial-scale=1.0">
     <title>StadiumPass | Tactical Organizer Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -130,6 +136,7 @@ if (isset($_POST["send"])) {
                     <h2 class="font-league text-lg font-black italic tracking-tight"><i class="fas fa-plus-circle text-indigo-500 mr-2"></i>Nouvelle Demande d'Événement</h2>
                     <span class="text-[9px] font-black uppercase text-slate-500 bg-white/5 px-3 py-1 rounded-full border border-white/10">Configuration</span>
                 </div>
+                <?=$erreur?$erreur:'';?>
 
                 <form class="p-8" method="POST">
                     <!-- Section Équipes -->
@@ -227,7 +234,7 @@ if (isset($_POST["send"])) {
 
         // pour ajouter/supprimer une cat
         document.addEventListener('DOMContentLoaded', function() {
-            const maxCategories = 3;
+            const maxCategories = 4;
             const container = document.getElementById('categories-container');
             const addBtn = document.getElementById('add-category');
 

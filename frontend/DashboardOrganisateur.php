@@ -8,6 +8,7 @@ $req=new MatchEvent();
 $Match=$req->AffichierMatch($idUser);
 // var_dump($Match);
 
+
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-[#020617]">
@@ -133,6 +134,7 @@ $Match=$req->AffichierMatch($idUser);
                             <div class="flex items-center gap-4">
                                 <span class="badge-pending text-[8px] px-3 py-1 rounded-full font-black uppercase"><?=$match["statut"]?></span>
                                 <button class="w-10 h-10 glass-panel rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fas fa-edit"></i></button>
+                                <a href="./matchCommentaires.php?id=<?= $match["id"]?>" class="w-10 h-10 glass-panel rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fas fa-comments text-indigo-500"></i></a>
                             </div>
                         </div>
                     </div>

@@ -223,7 +223,7 @@
                     </div>
                     <!-- Formulaire d'avis (si match fini - conditionnel en PHP) -->
                     <div class="pt-6 border-t border-white/5">
-                        <p class="text-[10px] font-black text-slate-500 uppercase mb-4 text-center italic underline">Laisser un commentaire après le match</p>
+                        <a href="./matchCommentaires.php" class="text-[10px] font-black text-slate-500 uppercase mb-4 text-center italic underline">Laisser un commentaire après le match</a>
                     </div>
                 </div>
             </div>
