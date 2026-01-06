@@ -40,8 +40,9 @@ CREATE TABLE categories (
 /* table billets  */
 CREATE TABLE billets (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    numero_place INT NOT NULL,
+    numero_place varchar(100),
     id_code VARCHAR(255) UNIQUE NOT NULL,
+    quantite int,
     
 	user_id INT NOT NULL,
     match_id INT NOT NULL,

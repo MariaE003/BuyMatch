@@ -21,7 +21,8 @@ class MatchEvent{
     private $pdo;
     
     //constructeur recoit un objet du class categorie
-    public function __construct(Categorie $cate=null){
+    // methode deprecated: (Categorie $cate=null)
+    public function __construct(?Categorie $cate=null){
         $this->pdo=Connect::connect();
         $this->categorie=$cate;//
     }
@@ -129,7 +130,9 @@ class MatchEvent{
         ]);
         $nbr=$req->fetch(PDO::FETCH_ASSOC);
         return $nbr["nbr"] ;
-    }    
+    }   
+    
+    
 }
 
 ?>

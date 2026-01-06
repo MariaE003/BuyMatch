@@ -3,8 +3,9 @@
 require '../session.php';
 $rolePage="acheteur";
 
-require "../classes/MatchEvent.php";
-require "../classes/Billet.php";
+require_once "../classes/MatchEvent.php";
+require_once "../classes/Billet.php";
+require_once "../classes/Auth.php";
 
 $usee_id=$_SESSION["user_id"];
 $idMatch=$_GET["id"];
@@ -26,15 +27,36 @@ if (isset($_POST["envoyer"])) {
         $qt=(int) $_POST["quantity"];
         // var_dump($qt);
         try{
-            for ($i=0; $i <$qt ; $i++) { 
             $billet=new Billet();
+            $billet->setQuantite($_POST["quantity"]);
+            $idBillet=[];
+            for ($i=0; $i <$qt ; $i++) { 
             $NumPlace=$billet->getLastPlace($categorie_id,$idMatch);
             $billet->genererIdCode($usee_id,$idMatch,$categorie_id,$i);//i pour eviter duplicate
             $billet->setNumeroPlace($NumPlace);
-            $billet->setQuantite($_POST["quantity"]);
+
             
-            $idBillet=$billet->acheterBillets($usee_id,$idMatch,$categorie_id);
+            $idBil=$billet->acheterBillets($usee_id,$idMatch,$categorie_id);
+            $idBillet[]=$idBil;
+        }
+        if ($idBillet) {
+            $billet->deminuerNombredesPlaces($_POST["quantity"],$idMatch);
+
+            $IdbilletsAcheter=implode(",",$idBillet);
+            $pdf = $billet->genererPdf($idMatch,$usee_id,$IdbilletsAcheter);
+            if(file_exists($pdf)){
+                echo "PDF trouvé: $pdf";
+            }else{
+                echo "PDF non trouvé!";
             }
+
+            // Envoyer l'email
+            // ghanjib email et nom du user
+            // 
+            $userInfo=new Auth();
+            $userInfo1=$userInfo->affichierInfo($usee_id);
+            $billet->sendEmail($userInfo1["email"],$userInfo1["nom"], $pdf);      
+        }
             // echo '<script> alert('') </script>'
             // header("Location: Acheteur.php?id=$idBillet");
             header("Location: Acheteur.php");

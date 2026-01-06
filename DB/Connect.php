@@ -4,7 +4,7 @@ class Connect{
     private static $host="localhost";
     private static $dbname="buymatch";
     private static $username="root";
-    private static $password="";
+    private static $password="root";
     private static $pdo=null;
 
     public static function connect(){

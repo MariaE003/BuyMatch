@@ -1,6 +1,6 @@
 <?php
 require_once '../DB/Connect.php';
-require '../fpdf/fpdf.php';
+require_once '../fpdf/fpdf.php';
 
 
 class Billet {
@@ -126,12 +126,12 @@ class Billet {
         return $req->fetchAll(PDO::FETCH_ASSOC);  
     }
    
-        public function genererPdf($idMatch){
+        public function genererPdf($idMatch,$user_id,$IdbilletsAcheter){
         $req=$this->pdo->prepare("SELECT b.numero_place,b.id_code,b.user_id,b.match_id,b.categorie_id,m.*,c.label from billets b
         inner join matchs m on b.match_id = m.id 
         inner join categories c on c.id=b.categorie_id
-        where b.match_id=?");
-        $req->execute([$idMatch]);
+        where b.match_id=? and b.user_id=? and b.id=? ");
+        $req->execute([$idMatch,$user_id,$IdbilletsAcheter]);
         $billet=$req->fetchAll(PDO::FETCH_ASSOC);
         // var_dump($billet);
 
@@ -210,9 +210,9 @@ class Billet {
         require '../PHPMailer/src/SMTP.php';
         require '../PHPMailer/src/Exception.php';
 
-        $mail=new PHPMailer\PHPMailer\PHPMailer(true);
-
+        
         try {
+            $mail=new PHPMailer\PHPMailer\PHPMailer(true);
             $mail->isSMTP();
         $mail->Host       = 'sandbox.smtp.mailtrap.io';
         $mail->SMTPAuth   = true;
@@ -243,8 +243,16 @@ class Billet {
         }
 
         } catch (Exception $e) {
-        echo "Erreur lors de l'envoi de l'email: {$mail->ErrorInfo}";
+        echo "Erreur lors de l'envoi de l'email:". $e->getMessage();
     }
+    }
+
+    public function deminuerNombredesPlaces($qt,$match_id){
+        $req=$this->pdo->prepare("UPDATE matchs set nbrPlaceMax=nbrPlaceMax-? where id=?");
+        return $req->execute([
+            $qt,
+            $match_id,
+        ]);
     }
 }
 ?>

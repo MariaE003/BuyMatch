@@ -1,5 +1,5 @@
 <?php
-require __DIR__.'/../DB/Connect.php';
+require_once __DIR__.'/../DB/Connect.php';
 // abstract class User{
 abstract class User{
     protected $id;

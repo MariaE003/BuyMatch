@@ -135,9 +135,9 @@ $matchs=$match->Matchs();
                             <span class="font-league text-2xl font-black italic text-white/20">VS</span>
                         </div>
                         <div class="text-center flex-1">
-                            <div class="w-16 h-16 mx-auto mb-3 glass rounded-2xl flex items-center justify-center p-[1.75px]">
+                            <div class="w-16 h-16 mx-auto mb-3 glass rounded-2xl overflow-hidden">
                                 <!-- <i class="fas fa-shield-halved text-2xl text-red-500 team-logo"></i> -->
-                                <img class="bg-contain team-logo" src="<?=$match["logoEquipe2"]?>" alt="none">
+                                <img class="w-full h-full" src="<?=$match["logoEquipe2"]?>" alt="logo">
                             </div>
                             <span class="font-league text-[10px] font-bold block"><?=$match["Nomequipe2"]?></span>
                         </div>

@@ -12,13 +12,13 @@ require '../classes/Billet.php';
 
 // $pdf->Output();
 
-$billet=new Billet();
-// $billet->genererPdf(5);
+// $billet=new Billet();
+// // $billet->genererPdf(5);
 
 
 
-// Générer le PDF
-$pdfFile = $billet->genererPdf(5);
+// // Generer le PDF
+// $pdfFile = $billet->genererPdf(5);
 
-// Envoyer l'email
-$billet->sendEmail('your_email@gmail.com', 'maria', $pdfFile);
+// // Envoyer l'email
+// $billet->sendEmail('your_email@gmail.com', 'maria', $pdfFile);
