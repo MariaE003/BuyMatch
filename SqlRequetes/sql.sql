@@ -41,7 +41,7 @@ CREATE TABLE categories (
 CREATE TABLE billets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     numero_place INT NOT NULL,
-    qr_code VARCHAR(255) UNIQUE NOT NULL,
+    id_code VARCHAR(255) UNIQUE NOT NULL,
     
 	user_id INT NOT NULL,
     match_id INT NOT NULL,
@@ -101,3 +101,7 @@ INSERT INTO commentaires (commentaire, user_id, match_id) VALUES
 
 alter TABLE billets 
 add column quantite int
+
+-- la vue
+CREATE VIEW lesBilletsAcheter AS SELECT b.numero_place,b.id_code,b.user_id,b.match_id,b.categorie_id,m.* from billets b
+inner join matchs m on b.match_id = m.id

@@ -5,7 +5,7 @@ $rolePage="acheteur";
 $user_id=$_SESSION["user_id"];
 $billet=new Billet();
 // echo $user_id;
-$billetVenu=$billet->BilletVenir($user_id);
+$billetVenu=$billet->BilletPasse($user_id);
 // echo count($billetVenu);
 
 ?>
@@ -116,7 +116,7 @@ $billetVenu=$billet->BilletVenir($user_id);
             <!-- Header Section -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                 <div>
-                    <h1 class="font-league text-4xl font-black italic uppercase italic">Mes Billets <span class="text-indigo-500 text-6xl">.</span></h1>
+                    <h1 class="font-league text-4xl font-black italic uppercase italic">Mes Ancien Billets <span class="text-indigo-500 text-6xl">.</span></h1>
                     <p class="text-slate-500 text-sm mt-2">Vous avez <span class="text-white font-bold">2 billets</span> actifs pour les prochains matchs.</p>
                 </div>
                 <button class="btn-gradient px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3">
@@ -175,7 +175,7 @@ $billetVenu=$billet->BilletVenir($user_id);
     </main>
 
     <!-- Footer Simple & Dark -->
-    <footer class="bg-black/50 backdrop-blur-md border-t border-white/5 py-10 px-6">
+    <!-- <footer class="bg-black/50 backdrop-blur-md border-t border-white/5 py-10 px-6">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-4 grayscale opacity-50">
                 <span class="font-league text-xl font-black italic italic">ELITE<span class="text-indigo-500">STADIUM</span></span>
@@ -187,7 +187,7 @@ $billetVenu=$billet->BilletVenir($user_id);
                 <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
     <!-- Native JS pour petites interactions -->
     <script>

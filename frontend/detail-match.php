@@ -13,6 +13,7 @@ $idMatch=$_GET["id"];
 $matchs=new MatchEvent();
 $match=$matchs->findMatchById($idMatch);
 $cate=$matchs->CatduMatch($idMatch);
+$erreur='';
 
 
 if (isset($_POST["envoyer"])) {
@@ -21,17 +22,25 @@ if (isset($_POST["envoyer"])) {
 
         // idcat
         $categorie_id=$_POST["category"];
-        echo $categorie_id;
+        // echo $categorie_id;
         $qt=(int) $_POST["quantity"];
         // var_dump($qt);
-        for ($i=0; $i <$qt ; $i++) { 
-        $billet=new Billet();
-        $NumPlace=$billet->getLastPlace($categorie_id,$idMatch);
-        $billet->genererIdCode($usee_id,$idMatch,$categorie_id,$i);//i pour eviter duplicate
-        $billet->setNumeroPlace($NumPlace);
-        $billet->setQuantite($_POST["quantity"]);
+        try{
+            for ($i=0; $i <$qt ; $i++) { 
+            $billet=new Billet();
+            $NumPlace=$billet->getLastPlace($categorie_id,$idMatch);
+            $billet->genererIdCode($usee_id,$idMatch,$categorie_id,$i);//i pour eviter duplicate
+            $billet->setNumeroPlace($NumPlace);
+            $billet->setQuantite($_POST["quantity"]);
+            
+            $idBillet=$billet->acheterBillets($usee_id,$idMatch,$categorie_id);
+            }
+            // echo '<script> alert('') </script>'
+            // header("Location: Acheteur.php?id=$idBillet");
+            header("Location: Acheteur.php");
 
-        $billet->acheterBillets($usee_id,$idMatch,$categorie_id);
+        }catch(Exception $e){
+            $erreur='<div class="p-4 mb-4 text-red-700 bg-red-100 rounded"> erreur :'.$e->getMessage().'</div>';
         }
     }
     // echo $_POST["quantity"],$_POST["category"];
@@ -166,7 +175,7 @@ if (isset($_POST["envoyer"])) {
                     <h3 class="font-league text-2xl font-black italic uppercase tracking-tighter">Réserver vos <span class="text-indigo-500">Places</span></h3>
                     <span class="text-[10px] bg-white/10 px-4 py-1 rounded-full font-bold uppercase text-slate-400">Max 4 billets</span>
                 </div>
-                
+                <?=$erreur?$erreur:''?>
                 <form  method="POST" class="space-y-10" >
                     <!-- Sélection de Catégorie -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

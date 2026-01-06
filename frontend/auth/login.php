@@ -17,10 +17,10 @@
             header("Location: /BuyMatch/index.php");
         }
     }
- }
- 
- 
- ?>
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="fr" class="h-full bg-[#05070a]">
 <head>
