@@ -1,6 +1,13 @@
 <?php
-require '../session.php';
+require_once '../session.php';
+require_once '../classes/MatchEvent.php';
+
 $rolePage="admin";
+
+$match=new MatchEvent();
+$matchEnAttent=$match->AffichierTousMatchs();
+
+
 
 ?>
 <!DOCTYPE html>
@@ -129,16 +136,17 @@ $rolePage="admin";
                     </div>
 
                     <div class="space-y-4">
+                        <?php foreach($matchEnAttent as $match) {  ?>
                         <!-- Match Item -->
                         <div class="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-3xl hover:bg-indigo-500/[0.02] hover:border-indigo-500/20 transition group">
                             <div class="flex items-center gap-6">
                                 <div class="w-12 h-12 glass-panel rounded-2xl flex items-center justify-center font-league italic font-black text-indigo-500">VS</div>
                                 <div>
                                     <div class="flex items-center gap-3">
-                                        <p class="text-xs font-black uppercase italic tracking-tighter">Real Madrid <span class="text-slate-500 px-2 font-normal">X</span> AC Milan</p>
-                                        <span class="text-[8px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded uppercase font-black">Elite Match</span>
+                                        <p class="text-xs font-black uppercase italic tracking-tighter"><?=$match["Nomequipe1"]?><span class="text-slate-500 px-2 font-normal">X</span> <?=$match["Nomequipe2"]?></p>
+                                        <span class="text-[8px] bg-orange-800 text-[#0a152f] px-2 py-0.5 rounded uppercase font-black"><?=$match["statut"]?></span>
                                     </div>
-                                    <p class="text-[10px] text-slate-500 mt-1">Organisateur : <span class="text-white">UEFA Global</span> • Stade Bernabéu</p>
+                                    <p class="text-[10px] text-slate-500 mt-1">Organisateur : <span class="text-white"><?=$match["nom"]?></span> • <?=$match["lieu"]?></p>
                                 </div>
                             </div>
                             <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
@@ -146,9 +154,10 @@ $rolePage="admin";
                                 <button class="btn-action bg-rose-500/10 text-rose-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase border border-rose-500/20">Refuser</button>
                             </div>
                         </div>
+                        <?php } ?>
 
                         <!-- Match Item 2 -->
-                        <div class="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-3xl">
+                        <!-- <div class="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-3xl">
                             <div class="flex items-center gap-6">
                                 <div class="w-12 h-12 glass-panel rounded-2xl flex items-center justify-center font-league italic font-black text-slate-500">VS</div>
                                 <div>
@@ -157,7 +166,7 @@ $rolePage="admin";
                                 </div>
                             </div>
                             <button class="p-3 rounded-xl bg-white/5 text-slate-500"><i class="fas fa-ellipsis-v"></i></button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

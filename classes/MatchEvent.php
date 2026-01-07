@@ -66,6 +66,17 @@ class MatchEvent{
         ]);
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
+    // les match de tous les organisateur pour admin
+    public function AffichierTousMatchs(){
+        $en_attente='en_attente';
+        $req=$this->pdo->prepare("SELECT * from matchs m
+        inner join users u on u.id=m.organisateur_id
+         where m.statut=?");
+        $req->execute([
+            $en_attente
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
     // les match accepter par admin for achteur
     public function Matchs(){
         $valide='valide';
@@ -132,6 +143,7 @@ class MatchEvent{
         return $nbr["nbr"] ;
     }   
     
+    // accepter le match
     
 }
 

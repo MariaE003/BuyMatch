@@ -231,11 +231,11 @@ class Billet {
         $mail->isHTML(true);
         $mail->Subject = 'Votre ticket pour le match';
         $mail->Body    = "<p>Bonjour $toName,</p>
-                          <p>Merci pour votre réservation. Veuillez trouver votre ticket en pièce jointe.</p>";
-        $mail->AltBody = "Bonjour $toName, Merci pour votre réservation. Veuillez trouver votre ticket en pièce jointe.";
+                          <p>Merci pour votre reservation. Veuillez trouver votre ticket en piece jointe.</p>";
+        $mail->AltBody = "Bonjour $toName, Merci pour votre reservation. Veuillez trouver votre ticket en piece jointe.";
 
         $mail->send();
-        echo "Email envoyé ";
+        echo "Email envoye ";
 
         // supprimer le file temporaire 
         if(file_exists($pdfFile)){

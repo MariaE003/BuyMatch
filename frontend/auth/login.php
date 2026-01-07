@@ -17,6 +17,7 @@
             header("Location: /BuyMatch/index.php");
         }
     }
+    echo $_SESSION['role'];
 }
 
 
