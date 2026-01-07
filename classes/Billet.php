@@ -254,5 +254,24 @@ class Billet {
             $match_id,
         ]);
     }
+
+    public function totalBillets(){
+        $req=$this->pdo->prepare("SELECT count(*) as nombre from billets");
+        $req->execute();
+        $res=$req->fetch(PDO::FETCH_ASSOC);
+        // var_dump($res["nombre"]);
+        return $res["nombre"];
+    }
+
+
+    public function VentesBrutes(){
+        $req=$this->pdo->prepare("SELECT sum(b.quantite * c.prix) as ventebrute from billets b
+        inner join categories c on c.id=b.categorie_id")           ;
+        $req->execute();
+        $nbr=$req->fetch(PDO::FETCH_ASSOC);
+
+        return $nbr["ventebrute"];
+    }
+
 }
 ?>

@@ -106,3 +106,6 @@ add column quantite int
 -- la vue
 CREATE VIEW lesBilletsAcheter AS SELECT b.numero_place,b.id_code,b.user_id,b.match_id,b.categorie_id,m.* from billets b
 inner join matchs m on b.match_id = m.id
+
+
+alter table users add column statut varchar(100) default 'activer';

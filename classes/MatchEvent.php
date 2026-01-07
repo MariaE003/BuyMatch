@@ -69,7 +69,7 @@ class MatchEvent{
     // les match de tous les organisateur pour admin
     public function AffichierTousMatchs(){
         $en_attente='en_attente';
-        $req=$this->pdo->prepare("SELECT * from matchs m
+        $req=$this->pdo->prepare("SELECT m.id as idMatch,u.*,m.* from matchs m
         inner join users u on u.id=m.organisateur_id
          where m.statut=?");
         $req->execute([
@@ -118,7 +118,7 @@ class MatchEvent{
     public function CatduMatch($id){
         $req=$this->pdo->prepare("SELECT c.id,c.prix,c.label from matchs m
         inner join categories c on c.match_id=m.id
-         where m.id=?");
+        where m.id=?");
         $req->execute([
             $id
         ]);
@@ -127,7 +127,7 @@ class MatchEvent{
 
     public function AffichierComemntaire(Commentaire $comment,$id_match){
         $req=$this->pdo->prepare("SELECT c.*,u.nom,u.image from commentaires c
-                                inner join users u on u.id=c.user_id  where match_id=?");
+                    inner join users u on u.id=c.user_id  where match_id=?");
         $req->execute([
             $id_match
         ]);
@@ -143,8 +143,38 @@ class MatchEvent{
         return $nbr["nbr"] ;
     }   
     
-    // accepter le match
+    // accepter/refuse le match par admin   
+    public function valideRefuseMatch($idMatch,$statut) {
+        if ($statut==="valide"){
+            $valide="valide";
+            $req=$this->pdo->prepare("UPDATE matchs set statut=? where id=?")           ;
+            return $req->execute([
+                $statut,(int)$idMatch
+            ]);
+            // var_dump($res);
+            // return $res;
+        }
+        if ($statut==="refuse"){
+            $refuse="refuse";
+            $req=$this->pdo->prepare("UPDATE matchs set statut=? where id=?")           ;
+            return $req->execute([
+                $refuse,(int)$idMatch
+            ]);
+            
+        }
+
+        
+    }
+    public function nbrDemandeMatch(){
+        $en_attente='en_attente';
+        $req=$this->pdo->prepare("SELECT count(*) as nbr from matchs where statut=?")           ;
+        $req->execute([
+                $en_attente,
+        ]);
+        $nbr=$req->fetch(PDO::FETCH_ASSOC);
+
+        return $nbr["nbr"];
+    }
     
 }
-
 ?>

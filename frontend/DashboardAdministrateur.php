@@ -1,13 +1,35 @@
 <?php
 require_once '../session.php';
 require_once '../classes/MatchEvent.php';
+require_once '../classes/Billet.php';
 
 $rolePage="admin";
+
+// var_dump($_POST);
+// exit;
 
 $match=new MatchEvent();
 $matchEnAttent=$match->AffichierTousMatchs();
 
 
+if (isset($_POST["action"])) {
+    $idMatch=$_POST["idMatch"];
+    // var_dump($idMatch);
+    
+    // if ($_POST["action"]==="valide") {
+    $test=$match->valideRefuseMatch($idMatch,$_POST["action"]);
+    // var_dump($test);
+    // }
+    // C:\Apache24\htdocs\BuyMatch\frontend\DashboardAdministrateur.php
+    header("Location: DashboardAdministrateur.php");
+    // if ($_POST["action"]==="refuse") {
+        // $match->valideRefuseMatch($idMatch,$_POST["action"]);
+        // }
+    }
+        
+$bill=new Billet();
+$billets=$bill->totalBillets();
+$VentesBrutes=$bill->VentesBrutes();
 
 ?>
 <!DOCTYPE html>
@@ -105,7 +127,7 @@ $matchEnAttent=$match->AffichierTousMatchs();
                 <div class="col-span-4 glass-panel p-6 rounded-[2rem] flex items-center justify-between group overflow-hidden relative">
                     <div class="relative z-10">
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-1 italic">Ventes Brutes</p>
-                        <h4 class="text-2xl font-black font-league italic">482K <span class="text-xs text-indigo-400">DH</span></h4>
+                        <h4 class="text-2xl font-black font-league italic"><?=$VentesBrutes?> <span class="text-xs text-indigo-400">DH</span></h4>
                     </div>
                     <i class="fas fa-chart-line text-4xl text-white/5 absolute -right-2 -bottom-2 group-hover:text-indigo-500/20 transition-all"></i>
                 </div>
@@ -114,7 +136,7 @@ $matchEnAttent=$match->AffichierTousMatchs();
                 <div class="col-span-4 glass-panel p-6 rounded-[2rem] flex items-center justify-between group overflow-hidden relative border-b-2 border-indigo-500">
                     <div class="relative z-10">
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-1 italic">Billets Actifs</p>
-                        <h4 class="text-2xl font-black font-league italic">12.4K</h4>
+                        <h4 class="text-2xl font-black font-league italic"><?=$billets?></h4>
                     </div>
                     <i class="fas fa-ticket text-4xl text-white/5 absolute -right-2 -bottom-2 transition-all"></i>
                 </div>
@@ -123,7 +145,7 @@ $matchEnAttent=$match->AffichierTousMatchs();
                 <div class="col-span-4 glass-panel p-6 rounded-[2rem] flex items-center justify-between group overflow-hidden relative">
                     <div class="relative z-10">
                         <p class="text-[10px] font-black text-slate-500 uppercase mb-1 italic">Demandes Actives</p>
-                        <h4 class="text-2xl font-black font-league italic">07</h4>
+                        <h4 class="text-2xl font-black font-league italic"><?=$match->nbrDemandeMatch()?></h4>
                     </div>
                     <i class="fas fa-hourglass-half text-4xl text-white/5 absolute -right-2 -bottom-2 group-hover:text-amber-500/20 transition-all"></i>
                 </div>
@@ -136,7 +158,10 @@ $matchEnAttent=$match->AffichierTousMatchs();
                     </div>
 
                     <div class="space-y-4">
-                        <?php foreach($matchEnAttent as $match) {  ?>
+
+                        <?php
+                        if (count($matchEnAttent)>0) {
+                         foreach($matchEnAttent as $match) {  ?>
                         <!-- Match Item -->
                         <div class="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-3xl hover:bg-indigo-500/[0.02] hover:border-indigo-500/20 transition group">
                             <div class="flex items-center gap-6">
@@ -150,11 +175,26 @@ $matchEnAttent=$match->AffichierTousMatchs();
                                 </div>
                             </div>
                             <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
-                                <button class="btn-action bg-emerald-500/10 text-emerald-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase border border-emerald-500/20">Approuver</button>
-                                <button class="btn-action bg-rose-500/10 text-rose-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase border border-rose-500/20">Refuser</button>
+                                <form  method="POST">
+                                    <input type="hidden" name="idMatch" value="<?=$match["idMatch"]?>">
+                                    <button type="submit" name="action" value="valide" class="btn-action bg-emerald-500/10 text-emerald-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase border border-emerald-500/20">Approuver</button>
+                                    <button type="submit" name="action" value="refuse" class="btn-action bg-rose-500/10 text-rose-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase border border-rose-500/20">Refuser</button>
+                                </form>
                             </div>
                         </div>
-                        <?php } ?>
+                        <?php 
+                            }
+                             }else{
+                            ?>
+                                <div class="p-6 my-4 border border-dashed border-gray-500 bg-gray-800 rounded-xl text-center text-gray-300 flex flex-col items-center justify-center space-y-2">
+                                    <i class="fas fa-comments-slash text-4xl text-gray-500"></i>
+                                    <p class="text-sm font-semibold">Aucun demande l'instant.</p>
+                                    <!-- <span class="text-xs text-gray-400">Soyez le premier à laisser un avis !</span> -->
+                                </div>
+                                <?php
+                             }
+
+                            ?>
 
                         <!-- Match Item 2 -->
                         <!-- <div class="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-3xl">
