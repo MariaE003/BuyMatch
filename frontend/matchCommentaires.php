@@ -2,16 +2,37 @@
 require '../classes/MatchEvent.php';
 require '../classes/Billet.php';
 require '../session.php';
-
+// require '../classes/Commentaire.php';
+$messageErreur='';
 $match_id=$_GET["id"];
+$iduser=$_SESSION["user_id"];
+
+$comment=new Commentaire();
+
+if (isset($_POST["envoyer"])) {
+    if (!empty($_POST["comment"])) {
+        // $comment->
+        try {
+            
+            $comment->setContenu($_POST["comment"]);
+
+            $comment->virifierMatchDate($match_id);
+            $comment->crrerComment($iduser,$match_id);
+        } catch (Exception $e) {
+            //throw $th;
+            $messageErreur="<div class='p-4 mb-4 text-red-700 bg-red-100 rounded'>".$e->getMessage()."</div>";
+        }
+    }
+}
 // echo $match_id;
 $match=new MatchEvent();
 $InfoMatch=$match->findMatchById($match_id);
 // var_dump($InfoMatch);
-$comment=new Commentaire();
 $commentMatch=$match->AffichierComemntaire($comment,$match_id);
 // var_dump($commentMatch);
 $nrbComent=$match->nbrComemntaireMatch($match_id);
+
+    
 
 ?>
 <!DOCTYPE html>
@@ -128,18 +149,20 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
                     <!-- Comments Feed -->
                     <div class="glass-panel rounded-[2.5rem] flex flex-col h-[600px]">
                         <div class="p-6 border-b border-white/5 flex justify-between items-center">
-                            <h3 class="font-league text-sm font-black italic uppercase text-white tracking-widest">Discussion <span class="text-indigo-500">Live</span></h3>
-                            <select class="bg-transparent text-[10px] font-black uppercase text-slate-400 outline-none border border-white/10 rounded-lg px-2 py-1">
+                            <h3 class="font-league text-sm font-black italic uppercase text-white tracking-widest">Discussion <span class="text-indigo-500"></span></h3>
+                            <!-- <select class="bg-transparent text-[10px] font-black uppercase text-slate-400 outline-none border border-white/10 rounded-lg px-2 py-1">
                                 <option>Plus Récents</option>
                                 <option>Plus Pertinents</option>
-                            </select>
+                            </select> -->
                         </div>
 
                         <!-- Scrollable Comments -->
                         <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scroll">
                             
                             <!-- Comment Item 1 -->
+                             
                              <?php
+                             echo $messageErreur?$messageErreur:'';
                              if (count($commentMatch)>0) {
                              foreach($commentMatch as $comment){                             
                              ?>
@@ -171,16 +194,16 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
                             ?>
                         </div>
                         <!-- Input Area -->
-                        <?php if ($_SESSION["role"] !== "organisateur") {
+                        <?php if ($_SESSION["role"] !== "organisateur" && $_SESSION["role"] !== "admin") {
                             ?>
-                        <div class="p-6 border-t border-white/5 bg-white/[0.01]">
+                        <form method="POST" class="p-6 border-t border-white/5 bg-white/[0.01]">
                             <div class="relative">
-                                <input type="text" placeholder="Ajouter un commentaire officiel..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-6 pr-32 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition">
-                                <button class="absolute right-2 top-2 bottom-2 bg-indigo-500 hover:bg-indigo-600 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all" >
+                                <input type="text" name="comment" placeholder="Ajouter un commentaire officiel..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-6 pr-32 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition">
+                                <button type="submit" name="envoyer" class="absolute right-2 top-2 bottom-2 bg-indigo-500 hover:bg-indigo-600 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all" >
                                     Envoyer
                                 </button>
                             </div>
-                        </div>
+                        </form>
                         <?php } ?>
                     </div>
                 </div>
