@@ -7,6 +7,8 @@ $messageErreur='';
 $match_id=$_GET["id"];
 $iduser=$_SESSION["user_id"];
 
+// echo $_SESSION["role"];
+
 $comment=new Commentaire();
 
 if (isset($_POST["envoyer"])) {
@@ -18,7 +20,7 @@ if (isset($_POST["envoyer"])) {
 
             $comment->virifierMatchDate($match_id);
             $comment->crrerComment($iduser,$match_id);
-        } catch (Exception $e) {
+        } catch (Exception $e){
             //throw $th;
             $messageErreur="<div class='p-4 mb-4 text-red-700 bg-red-100 rounded'>".$e->getMessage()."</div>";
         }
@@ -32,7 +34,6 @@ $commentMatch=$match->AffichierComemntaire($comment,$match_id);
 // var_dump($commentMatch);
 $nrbComent=$match->nbrComemntaireMatch($match_id);
 
-    
 
 ?>
 <!DOCTYPE html>
@@ -150,10 +151,6 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
                     <div class="glass-panel rounded-[2.5rem] flex flex-col h-[600px]">
                         <div class="p-6 border-b border-white/5 flex justify-between items-center">
                             <h3 class="font-league text-sm font-black italic uppercase text-white tracking-widest">Discussion <span class="text-indigo-500"></span></h3>
-                            <!-- <select class="bg-transparent text-[10px] font-black uppercase text-slate-400 outline-none border border-white/10 rounded-lg px-2 py-1">
-                                <option>Plus Récents</option>
-                                <option>Plus Pertinents</option>
-                            </select> -->
                         </div>
 
                         <!-- Scrollable Comments -->
@@ -171,12 +168,25 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
                                 <div class="flex-1">
                                     <div class="flex items-baseline justify-between mb-1">
                                         <h5 class="text-xs font-black uppercase italic text-indigo-400"><?=$comment["nom"]?>
-                                    </h5>
-                                    </div>
-                                    <div class="p-4 rounded-2xl rounded-tl-none bg-white/[0.03] border border-white/5 text-sm text-slate-300 leading-relaxed italic">
+                                        </h5>
+                                    </div>                                    
+                                    
+                                    <!-- button delete -->
+                                    <div class="group relative p-4 rounded-2xl rounded-tl-none bg-white/[0.03] border border-white/5 text-sm text-slate-300 leading-relaxed italic">
+                                        
                                         <?=$comment["commentaire"]?>
-                                        <!-- L'ambiance au stade est incroyable ! Le tifo du Raja est juste magnifique ce soir. Espérons un grand match. 🦅 -->
-                                    </div>
+                                        
+                                        <!-- Le bouton de suppression -->
+                                        <?php if ($_SESSION["role"] === "admin") {?>
+                                        <button type="submit" name="delect" value="<?=$comment["id"]?>" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-rose-500/20 rounded-lg border border-rose-500/30 
+                                            opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-rose-500 hover:text-white">
+                                            <i class="fa-regular fa-trash-can text-rose-500 group-hover:text-white text-xs"></i>
+                                        </button>
+                                        <?php 
+                                        }
+                                        ?>
+                                    
+                                </div> 
                                 </div>
                             </div>
                             <?php 
@@ -185,8 +195,8 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
                             ?>
                                 <div class="p-6 my-4 border border-dashed border-gray-500 bg-gray-800 rounded-xl text-center text-gray-300 flex flex-col items-center justify-center space-y-2">
                                     <i class="fas fa-comments-slash text-4xl text-gray-500"></i>
-                                    <p class="text-sm font-semibold">Aucun commentaire pour ce match pour l'instant.</p>
-                                    <!-- <span class="text-xs text-gray-400">Soyez le premier à laisser un avis !</span> -->
+                                    <!-- <p class="text-sm font-semibold">Aucun commentaire pour ce match pour l'instant.</p> -->
+                                    <span class="text-xs text-gray-400">Soyez le premier à laisser un avis !</span>
                                 </div>
                                 <?php
                              }

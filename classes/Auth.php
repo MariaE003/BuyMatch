@@ -60,5 +60,26 @@ class Auth extends User{
         $req->execute();
         return  $req->fetchAll(PDO::FETCH_ASSOC);
     }
+    // nbr users
+    public function nbrUsers(){
+        $req=$this->pdo->prepare("SELECT  count(*) as nbr from users where role!='admin' ");
+        $req->execute();
+        $test=$req->fetch(PDO::FETCH_ASSOC);
+        return  $test["nbr"];
+    }
+    // nbr organisateurs
+    public function nbrOrg(){
+        $req=$this->pdo->prepare("SELECT  count(*) as nbr from users where role='organisateur' ");
+        $req->execute();
+        $test=$req->fetch(PDO::FETCH_ASSOC);
+        return  $test["nbr"];
+    }
+
+    public function nbrBannis(){
+        $req=$this->pdo->prepare("SELECT  count(*) as nbr from users where statut='desactiver' ");
+        $req->execute();
+        $test=$req->fetch(PDO::FETCH_ASSOC);
+        return  $test["nbr"];
+    }
 }
 ?>

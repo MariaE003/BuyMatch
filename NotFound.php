@@ -23,7 +23,7 @@
     </div>
     <h2 class="font-league text-3xl font-black italic uppercase text-white mb-4">Hors-Jeu !</h2>
     <p class="text-slate-500 max-w-md mb-10 font-light italic">La page que vous recherchez semble avoir quitté le terrain. Revenez au centre du jeu.</p>
-    <a href="../index.php" class="btn-gradient px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest text-white shadow-xl">Retour à l'accueil</a>
+    <a href="../BuyMatch/index.php" class="btn-gradient px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest text-white shadow-xl">Retour à l'accueil</a>
 </div>
 </body>
 </html>

@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /BUYMATCH/
+
+ErrorDocument 404 /BUYMATCH/NotFound.php

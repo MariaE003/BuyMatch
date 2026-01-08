@@ -105,22 +105,24 @@ if (isset($_POST["activeD"])) {
         </header>
 
         <!-- Stats Overview -->
-        <div class="grid grid-cols-4 gap-6">
+        <div class="grid grid-cols-3 gap-6">
             <div class="glass-panel p-6 rounded-[2rem] border-l-4 border-indigo-500">
                 <p class="text-[10px] font-black text-slate-500 uppercase italic mb-1">Total Utilisateurs</p>
-                <h3 class="text-2xl font-black font-league">2,840</h3>
+                <h3 class="text-2xl font-black font-league"><?= $user->nbrUsers()?></h3>
             </div>
             <div class="glass-panel p-6 rounded-[2rem]">
                 <p class="text-[10px] font-black text-slate-500 uppercase italic mb-1">Organisateurs</p>
-                <h3 class="text-2xl font-black font-league text-indigo-400">142</h3>
+                <h3 class="text-2xl font-black font-league text-indigo-400"><?= $user->nbrOrg()?></h3>
             </div>
-            <div class="glass-panel p-6 rounded-[2rem]">
+
+            <!-- <div class="glass-panel p-6 rounded-[2rem]">
                 <p class="text-[10px] font-black text-slate-500 uppercase italic mb-1">Nouveaux (24h)</p>
                 <h3 class="text-2xl font-black font-league text-emerald-500">+12</h3>
-            </div>
+            </div> -->
+
             <div class="glass-panel p-6 rounded-[2rem] border-l-4 border-rose-500">
                 <p class="text-[10px] font-black text-slate-500 uppercase italic mb-1">Bannis</p>
-                <h3 class="text-2xl font-black font-league text-rose-500">09</h3>
+                <h3 class="text-2xl font-black font-league text-rose-500"><?=$user->nbrBannis()?></h3>
             </div>
         </div>
 
@@ -136,9 +138,9 @@ if (isset($_POST["activeD"])) {
 
             <!-- Table Header -->
             <div class="grid grid-cols-12 px-6 mb-4 text-[10px] font-black uppercase tracking-widest text-slate-500 italic">
-                <div class="col-span-4">Utilisateur</div>
-                <div class="col-span-3">Rôle </div>
-                <div class="col-span-3">Statut </div>
+                <div class="col-span-3">Utilisateur</div>
+                <div class="col-span-2">Rôle </div>
+                <div class="col-span-2">Statut </div>
                 <div class="col-span-3">Date d'inscription</div>
                 <div class="col-span-2 text-right">Actions</div>
             </div>
@@ -149,57 +151,37 @@ if (isset($_POST["activeD"])) {
                 <!-- Account Row 1 -->
                  <?php foreach($AfficherUsers as $users){ ?>
                 <div class="user-card grid grid-cols-12 items-center p-4 bg-white/[0.02] border border-white/5 rounded-2xl group">
-                    <div class="col-span-4 flex items-center gap-4">
+                    
+                    <div class="col-span-3 flex items-center gap-4">
                         <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center font-black text-indigo-500 border border-white/5"><?=strtoupper(substr($users['nom'],0,2))?></div>
                         <div>
                             <p class="text-sm font-bold"><?=$users['nom']?></p>
                             <p class="text-[10px] text-slate-500"><?=$users['email']?></p>
                         </div>
                     </div>
-                    <div class="col-span-3 flex items-center gap-3">
+
+                    <div class="col-span-2 flex items-center gap-3">
                         <span class="text-[9px] font-black uppercase bg-indigo-500/10 text-indigo-400 px-3 py-1 rounded-lg border border-indigo-500/20"><?=$users['role']?></span>
                         <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
                     </div>
-                    <div class="col-span-3 flex items-center gap-3">
+                    <div class="col-span-2 flex items-center gap-3">
                         <span class="text-[9px] font-black uppercase bg-indigo-500/10 text-indigo-400 px-3 py-1 rounded-lg border border-indigo-500/20"><?=$users['statut']?></span>
                     </div>
 
                     <div class="col-span-3 text-[11px] text-slate-400 font-medium italic">
                         <?=$users['date_inscription']?>
                     </div>
-                    <!-- absolute -bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all  -->
-                    <form method="POST">
+
+                    <form method="POST" class="col-span-2 relative">
                         <input type="hidden" name="idUser" value="<?=$users["id"]?>">
                         <div class="absolute -bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all">
                             <button type="submit" name="activeD" value="activer" class="w-8 h-8 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs hover:bg-indigo-500 hover:text-white transition"><i class="fas fa-sync"></i></button>
                             <button type="submit" name="activeD" value="desactiver" class="w-8 h-8 bg-rose-500/10 text-rose-500 rounded-lg text-xs hover:bg-rose-500 hover:text-white transition"><i class="fas fa-ban"></i></button>
                         </div>
-
                     </form>
-                </div>
-                <!-- absolute -bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all -->
-                <?php } ?>
 
-                <!-- Account Row 2 (Banned State) -->
-                <!-- <div class="user-card grid grid-cols-12 items-center p-4 bg-rose-500/[0.02] border border-rose-500/10 rounded-2xl group opacity-60">
-                    <div class="col-span-4 flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center font-black text-slate-600 border border-white/5">JD</div>
-                        <div>
-                            <p class="text-sm font-bold italic line-through text-slate-500">John Doe #09</p>
-                            <p class="text-[10px] text-slate-600 font-mono italic">Account_Terminated_Ref88</p>
-                        </div>
-                    </div>
-                    <div class="col-span-3 flex items-center gap-3">
-                        <span class="text-[9px] font-black uppercase bg-slate-500/10 text-slate-500 px-3 py-1 rounded-lg border border-slate-500/20">Client</span>
-                        <span class="text-[8px] font-black uppercase text-rose-500 italic">[ BANNI ]</span>
-                    </div>
-                    <div class="col-span-3 text-[11px] text-slate-600 font-medium italic">
-                        05 Septembre 2023
-                    </div>
-                    <div class="col-span-2 flex justify-end gap-2">
-                        <button class="text-[9px] font-black uppercase text-indigo-400 hover:underline">Restaurer</button>
-                    </div>
-                </div> -->
+                </div>
+                <?php } ?>
             </div>
 
             <!-- Footer Pagination -->
