@@ -39,7 +39,7 @@ abstract class User{
             return false;
         }
         $this->password=password_hash($this->password,PASSWORD_BCRYPT);
-        $req=$this->pdo->prepare("INSERT into users (nom, email, mot_de_passe, role, image) VALUES(:nom, :email, :password, :role, :image)");
+        $req=$this->pdo->prepare("INSERT into users (nom, email, mot_de_passe, role, image,date_inscription) VALUES(:nom, :email, :password, :role, :image,now())");
         $req->execute([
             ":nom"=>$this->nom,
             ":email"=>$this->email,

@@ -30,12 +30,35 @@ class Auth extends User{
     }
 
     public function affichierInfo($id_user){
-        $req=$this->pdo->prepare("select  * from users where id=?");
+        $req=$this->pdo->prepare("SELECT  * from users where id=?");
         $req->execute([
             $id_user
         ]);
         return  $req->fetch(PDO::FETCH_ASSOC);
         
+    }
+    public function gererUsers($idUser,$statut){
+        if ($statut==="activer") {
+            $req=$this->pdo->prepare("UPDATE users set statut='activer' where id=?");
+            return $req->execute([
+                $idUser
+            ]);
+        }
+
+        if ($statut==="desactiver") {
+            $req=$this->pdo->prepare("UPDATE users set statut='desactiver' where id=?");
+            return $req->execute([
+                $idUser
+            ]);
+        }
+        
+
+    }
+
+     public function affichierTousInfo(){
+        $req=$this->pdo->prepare("SELECT  * from users where role='acheteur' or role='organisateur'");
+        $req->execute();
+        return  $req->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

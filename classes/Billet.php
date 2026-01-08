@@ -145,58 +145,58 @@ class Billet {
             // $pdf->Cell(0,10,$b["Nomequipe2"],0,1);
 
             // bordure et font
-            $pdf->SetFillColor(245,245,245);           // couleur de fond
-            $pdf->Rect(15,20,180,110,'F');             // Rectangle du fond
-            $pdf->SetDrawColor(200,0,50);              // Couleur de la bordure
-            $pdf->Rect(15,20,180,110);                 // Bordure du ticket
+            $pdf->SetFillColor(245,245,245);           
+            $pdf->Rect(15,20,180,110,'F');            
+            $pdf->SetDrawColor(200,0,50);             
+            $pdf->Rect(15,20,180,110);                
 
             // header (titre du ticket)
-            $pdf->SetFillColor(200,0,50);              // Couleur rouge du header
-            $pdf->Rect(15,20,180,20,'F');              // Bande du header
-            $pdf->SetFont('Arial','B',18);              // Police en gras
-            $pdf->SetTextColor(255,255,255);           // Texte en blanc
-            $pdf->SetXY(15,25);                        // Position du texte
-            $pdf->Cell(180,10,'MATCH TICKET',0,0,'C'); // Titre centré
+            $pdf->SetFillColor(200,0,50);             
+            $pdf->Rect(15,20,180,20,'F');             
+            $pdf->SetFont('Arial','B',18);             
+            $pdf->SetTextColor(255,255,255);          
+            $pdf->SetXY(15,25);                       
+            $pdf->Cell(180,10,'MATCH TICKET',0,0,'C');
 
             // les nom des equip
-            $pdf->SetTextColor(0,0,0);                 // Texte noir
-            $pdf->SetFont('Arial','B',16);              // Police plus grande
-            $pdf->SetXY(15,45);                        // Position
-            $pdf->Cell(180,10,$b['Nomequipe1'].' VS '.$b['Nomequipe2'],0,0,'C'); // Équipes
+            $pdf->SetTextColor(0,0,0);               
+            $pdf->SetFont('Arial','B',16);             
+            $pdf->SetXY(15,45);                       
+            $pdf->Cell(180,10,$b['Nomequipe1'].' VS '.$b['Nomequipe2'],0,0,'C');
 
             // ligne pour separer
-            $pdf->SetDrawColor(200,0,50);              // Couleur de la ligne
-            $pdf->Line(25,58,185,58);                  // Ligne horizontale
+            $pdf->SetDrawColor(200,0,50);             
+            $pdf->Line(25,58,185,58);                 
 
             // info du ticket
-            $pdf->SetFont('Arial','',11);               // Police normale
-            $pdf->SetXY(25,65);                        // Position colonne gauche
+            $pdf->SetFont('Arial','',11);              
+            $pdf->SetXY(25,65);                       
             $pdf->Cell(40,8,'Place:',0,0);             
-            $pdf->Cell(40,8,$b['numero_place'],0,1);   // Numéro de place
+            $pdf->Cell(40,8,$b['numero_place'],0,1);   
             $pdf->SetX(25);
             $pdf->Cell(40,8,'Categorie:',0,0);          
-            $pdf->Cell(40,8,$b['label'],0,1);           // Catégorie
+            $pdf->Cell(40,8,$b['label'],0,1);          
 
-            $pdf->SetXY(115,65);                       // Position colonne droite
+            $pdf->SetXY(115,65);                      
             $pdf->Cell(30,8,'Date:',0,0);              
-            $pdf->Cell(40,8,$b['date'],0,1);            // Date du match
+            $pdf->Cell(40,8,$b['date'],0,1);          
             $pdf->SetX(115);
             $pdf->Cell(30,8,'Stade:',0,0);             
-            $pdf->Cell(40,8,$b['lieu'],0,1);            // Stade
+            $pdf->Cell(40,8,$b['lieu'],0,1);
 
             // code ticket
-            $pdf->SetFillColor(40,40,40);               // Fond noir
-            $pdf->Rect(25,95,160,12,'F');               // Rectangle du code
-            $pdf->SetTextColor(255,255,255);            // Texte blanc
-            $pdf->SetFont('Arial','B',12);              // Police en gras
+            $pdf->SetFillColor(40,40,40);       
+            $pdf->Rect(25,95,160,12,'F');               
+            $pdf->SetTextColor(255,255,255);      
+            $pdf->SetFont('Arial','B',12);           
             $pdf->SetXY(25,98);
-            $pdf->Cell(160,6,'CODE : '.$b['id_code'],0,0,'C'); // Code du billet
+            $pdf->Cell(160,6,'CODE : '.$b['id_code'],0,0,'C'); 
 
             //  footer
-            $pdf->SetFont('Arial','I',9);               // Police italique
-            $pdf->SetTextColor(120,120,120);            // Gris
+            $pdf->SetFont('Arial','I',9);               
+            $pdf->SetTextColor(120,120,120);            
             $pdf->SetXY(15,112);
-            $pdf->Cell(180,6,'BuyMatch - Ticket Officiel',0,0,'C'); // Footer
+            $pdf->Cell(180,6,'BuyMatch - Ticket Officiel',0,0,'C');
 
             
         }
@@ -217,17 +217,17 @@ class Billet {
         $mail->Host       = 'sandbox.smtp.mailtrap.io';
         $mail->SMTPAuth   = true;
         $mail->Username   = '4f54d28a136c37'; // ton email
-        $mail->Password   = '27421923509a2a';        // app password Gmail
+        $mail->Password   = '27421923509a2a';  //  password 
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 2525;
 
         $mail->setFrom('marigotbi@gmail.com', 'BuyMatch');
         $mail->addAddress($toEmail, $toName);
 
-        // Pièce jointe
+        // attachment
         $mail->addAttachment($pdfFile);
 
-        // Contenu
+        // contenue
         $mail->isHTML(true);
         $mail->Subject = 'Votre ticket pour le match';
         $mail->Body    = "<p>Bonjour $toName,</p>
