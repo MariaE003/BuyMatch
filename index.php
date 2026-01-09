@@ -1,5 +1,5 @@
 <?php 
-require_once './session.php';
+// require_once './session.php';
 require_once './classes/MatchEvent.php';
 // print_r($_SESSION);
 // var_dump($_SESSION);

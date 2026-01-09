@@ -1,7 +1,8 @@
 <?php
+// require_once 'index.php';
 session_start();
 if (!isset($_SESSION["user_id"])) {
-    header("Location: frontend/auth/login.php");
+    header("Location: /BuyMatch/frontend/auth/login.php");
     exit();
 }
 if (isset($_POST["logout"])) {
@@ -14,7 +15,7 @@ if (isset($_POST["logout"])) {
 function checkRole($roles =[]){
     
    if (!isset($_SESSION["role"])) {
-        header("Location: frontend/auth/login.php");
+        header("Location: /BuyMatch/frontend/auth/login.php");
         exit();
     }
 

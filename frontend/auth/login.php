@@ -17,6 +17,7 @@ $erreur="";
                 $_SESSION['role']=$user->getRole();
                 // C:\laragon\www\BuyMatch\index.php
                 header("Location: /BuyMatch/index.php");
+                exit();
             }
         }catch(Exception $e){
             $erreur=$e->getMessage();

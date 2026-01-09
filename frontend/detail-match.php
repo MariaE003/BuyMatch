@@ -1,6 +1,6 @@
 <?php
 
-require '../session.php';
+// require '../session.php';
 // $rolePage="acheteur";
 // checkRole(['admin','acheteur']);//org??
 
@@ -8,7 +8,14 @@ require_once "../classes/MatchEvent.php";
 require_once "../classes/Billet.php";
 require_once "../classes/Auth.php";
 
-$usee_id=$_SESSION["user_id"];
+
+
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$usee_id=isset($_SESSION["user_id"]);
 $idMatch=$_GET["id"];
 
 
@@ -17,6 +24,7 @@ $match=$matchs->findMatchById($idMatch);
 $cate=$matchs->CatduMatch($idMatch);
 $erreur='';
 
+if ($usee_id) {
 
 if (isset($_POST["envoyer"])) {
     if (!empty($_POST["quantity"]) && !empty($_POST["category"])) {
@@ -68,6 +76,8 @@ if (isset($_POST["envoyer"])) {
         }
     }
     // echo $_POST["quantity"],$_POST["category"];
+}
+
 }
 ?>
 
@@ -193,6 +203,28 @@ if (isset($_POST["envoyer"])) {
                 </div>
             </div>
 
+            <?php if(!$_SESSION["user_id"]) { ?>
+            <div class="glass border border-indigo-500/20 rounded-2xl p-6 text-center shadow-xl shadow-indigo-500/10 max-w-xl mx-auto">
+    
+                <div class="w-12 h-12 mx-auto mb-4 bg-indigo-600/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-lock text-indigo-400 text-xl"></i>
+                </div>
+
+                <h3 class="text-lg font-black uppercase tracking-wider mb-2">
+                    Connexion requise
+                </h3>
+
+                <p class="text-sm text-gray-300 mb-6">
+                    Vous devez être connecté pour pouvoir acheter un billet.
+                </p>
+
+                <a href="/BuyMatch/frontend/auth/login.php"
+                class="btn-gradient px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20 inline-block">
+                    Se connecter
+                </a>
+            </div>
+
+            <?php } ?>
             <!-- Réservation (Action Utilisateur) -->
             <div class="glass rounded-[2.5rem] p-8 md:p-12 border-l-4 border-indigo-500">
                 <div class="flex justify-between items-center mb-10">
@@ -235,9 +267,11 @@ if (isset($_POST["envoyer"])) {
                             <p class="text-xs text-slate-500 font-bold uppercase italic">Total à payer</p>
                             <p id="totalPrice" class="font-league text-4xl font-black italic tracking-tighter">0 DH</p>
                         </div>
-                        <button type="submit" name="envoyer" class="btn-gradient px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl w-full md:w-auto">
+
+                        <button type="submit" <?=isset($_SESSION["user_id"])?'disabled':''?> disabled name="envoyer" class="btn-gradient px-12 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl w-full md:w-auto " >
                             Confirmer la réservation
                         </button>
+
                     </div>
                 </form>
             </div>
@@ -263,7 +297,7 @@ if (isset($_POST["envoyer"])) {
 
             <!-- Notes & Avis (Bonus Section) -->
             <div class="glass rounded-[2.5rem] p-8">
-                <div class="flex justify-between items-center mb-8">
+                <!-- <div class="flex justify-between items-center mb-8">
                     <h4 class="font-league text-lg font-black italic italic">Avis <span class="text-indigo-500">Fans</span></h4>
                     <div class="text-right">
                         <div class="flex text-yellow-500 text-xs mb-1">
@@ -271,7 +305,7 @@ if (isset($_POST["envoyer"])) {
                         </div>
                         <span class="text-[10px] font-black text-slate-500 uppercase">4.8 / 5.0</span>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="space-y-6">
                     <!-- Un avis -->
