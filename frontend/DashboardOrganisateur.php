@@ -2,6 +2,7 @@
 require '../session.php';
 require '../classes/MatchEvent.php';
 $rolePage = "organisateur";
+checkRole(['organisateur']);
 
 $idUser=$_SESSION["user_id"];
 $req=new MatchEvent();
@@ -51,8 +52,6 @@ $Match=$req->AffichierMatch($idUser);
 </head>
 <body class="flex h-screen overflow-hidden p-0">
 
-    <!-- 1. SIDEBAR (Fixe à gauche) -->
-     <?php require './composant/aside.php';  ?>
     <!-- 2. MAIN WORKSPACE -->
     <div class="flex-1 flex flex-col min-w-0">
         
@@ -133,7 +132,7 @@ $Match=$req->AffichierMatch($idUser);
                             </div>
                             <div class="flex items-center gap-4">
                                 <span class="badge-pending text-[8px] px-3 py-1 rounded-full font-black uppercase"><?=$match["statut"]?></span>
-                                <button class="w-10 h-10 glass-panel rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fas fa-edit"></i></button>
+                                <!-- <button class="w-10 h-10 glass-panel rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fas fa-edit"></i></button> -->
                                 <a href="./matchCommentaires.php?id=<?= $match["id"]?>" class="w-10 h-10 glass-panel rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fas fa-comments text-indigo-500"></i></a>
                             </div>
                         </div>

@@ -1,7 +1,8 @@
 <?php
 
 require '../session.php';
-$rolePage="acheteur";
+// $rolePage="acheteur";
+// checkRole(['admin','acheteur']);//org??
 
 require_once "../classes/MatchEvent.php";
 require_once "../classes/Billet.php";

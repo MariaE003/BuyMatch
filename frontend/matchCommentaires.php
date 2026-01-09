@@ -3,6 +3,8 @@ require '../classes/MatchEvent.php';
 require '../classes/Billet.php';
 require '../session.php';
 // require '../classes/Commentaire.php';
+checkRole(['admin','acheteur','organisateur']);
+
 $messageErreur='';
 $match_id=$_GET["id"];
 $iduser=$_SESSION["user_id"];
@@ -74,24 +76,11 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
         .comment-gradient {
             background: linear-gradient(90deg, rgba(129, 140, 248, 0.05) 0%, transparent 100%);
         }
-    </style>
+        </style>
 </head>
-<body class="flex h-screen overflow-hidden p-0">
+<?php require_once './composant/nav.php';?>
+<body class=" h-screen overflow-y-auto p-0">
 
-    <!-- SIDEBAR (Placeholder) -->
-    <aside class="w-64 glass-panel border-r border-white/5 hidden lg:flex flex-col">
-        <div class="p-8">
-            <div class="text-indigo-500 font-black text-2xl font-league italic">ELITE<span class="text-white">L.</span></div>
-        </div>
-        <nav class="flex-1 px-4 space-y-2">
-            <a href="#" class="flex items-center gap-4 p-4 text-slate-400 hover:text-white hover:bg-white/5 rounded-2xl transition">
-                <i class="fas fa-th-large"></i> <span class="text-xs font-bold uppercase tracking-widest">Dashboard</span>
-            </a>
-            <a href="#" class="flex items-center gap-4 p-4 text-white bg-indigo-500/10 border border-indigo-500/20 rounded-2xl transition">
-                <i class="fas fa-comments text-indigo-500"></i> <span class="text-xs font-bold uppercase tracking-widest">Commentaires</span>
-            </a>
-        </nav>
-    </aside>
 
     <!-- MAIN WORKSPACE -->
     <div class="flex-1 flex flex-col min-w-0">
@@ -105,16 +94,6 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
                 <p class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] italic mt-1">
                     Community Feedback • Live Stream Monitoring
                 </p>
-            </div>
-            
-            <div class="flex items-center gap-6">
-                <div class="flex items-center gap-4 border-l border-white/10 pl-6">
-                    <div class="text-right">
-                        <p class="text-xs font-bold italic text-slate-50">Admin Moderator</p>
-                        <p class="text-[9px] text-indigo-400 font-black uppercase tracking-tighter">Status: Online</p>
-                    </div>
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=818cf8&color=fff" class="w-10 h-10 rounded-2xl border border-white/10" alt="Avatar">
-                </div>
             </div>
         </header>
 
@@ -243,6 +222,7 @@ $nrbComent=$match->nbrComemntaireMatch($match_id);
             </div>
         </main>
     </div>
+    <?php require './composant/footer.php';?>
 
 </body>
 </html>

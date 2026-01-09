@@ -10,6 +10,11 @@ require_once './classes/MatchEvent.php';
 $match=new MatchEvent();
 $matchs=$match->Matchs();
 // var_dump($matchs);
+
+
+if (isset($_POST["send"])) {
+    $searchMatchs=$match->filterMatchs($_POST["LieuMatch"]);
+}
 ?>
 
 <!DOCTYPE html>
@@ -75,26 +80,100 @@ $matchs=$match->Matchs();
 
     <!-- Filter Bar (Glassmorphism) -->
     <section class="max-w-[1200px] mx-auto w-full px-6 -mt-12 relative z-20">
-        <div class="glass p-4 rounded-[2.5rem] shadow-2xl flex flex-col lg:flex-row gap-4 items-center border border-white/10">
+        <form method="POST" class="glass p-4 rounded-[2.5rem] shadow-2xl flex flex-col lg:flex-row gap-4 items-center border border-white/10">
             <div class="flex-1 w-full relative">
                 <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                <input type="text" id="searchMatch" placeholder="Rechercher une équipe ou un stade..." class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-14 pr-6 text-sm outline-none focus:border-indigo-500 transition">
+                <input type="text" name="LieuMatch" id="searchMatch" placeholder="Rechercher une équipe ou un stade..." class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-14 pr-6 text-sm outline-none focus:border-indigo-500 transition">
             </div>
             
             <div class="flex w-full lg:w-auto gap-4">
-                <select id="filterLieu" class="bg-white/5 border border-white/5 rounded-2xl py-4 px-6 text-sm outline-none focus:border-indigo-500 transition cursor-pointer">
+                <!-- <select id="filterLieu" class="bg-white/5 border border-white/5 rounded-2xl py-4 px-6 text-sm outline-none focus:border-indigo-500 transition cursor-pointer">
                     <option value="" class="bg-[#05070a]">Tous les lieux</option>
                     <option value="Casablanca" class="bg-[#05070a]">Casablanca</option>
                     <option value="Rabat" class="bg-[#05070a]">Rabat</option>
                     <option value="Madrid" class="bg-[#05070a]">Madrid</option>
-                </select>
+                </select> -->
                 
-                <button class="bg-white text-black px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition">
+                <button type="submit" name="send" class="bg-white text-black px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition">
                     Filtrer
                 </button>
             </div>
-        </div>
+        </form>
     </section>
+    <?php if (isset($_POST["send"]) && count($searchMatchs)>0) {?>
+    <section class="max-w-[1400px] mx-auto w-full px-6 mt-28">
+    <div class="mb-10">
+        <h2 class="font-league text-3xl font-black italic uppercase text-indigo-400">
+            Résultats de Recherche
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">
+            Matchs correspondant à votre recherche
+        </p>
+    </div>
+
+    <div class="space-y-6">
+        <?php 
+        
+        foreach ($searchMatchs as $match) { ?>
+            <div class="relative group rounded-3xl overflow-hidden border border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 via-white/5 to-transparent hover:border-indigo-500 transition">
+
+                <!-- Badge -->
+                <span class="absolute top-4 left-4 bg-indigo-500 text-black px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">
+                    Match Recherché
+                </span>
+
+                <div class="flex flex-col lg:flex-row items-center gap-8 p-8">
+
+                    <!-- Teams -->
+                    <div class="flex items-center gap-6 flex-1">
+                        <div class="text-center">
+                            <img src="<?= $match["logoEquipe1"] ?>" class="w-14 h-14 mx-auto mb-2">
+                            <span class="font-league text-[10px] font-bold">
+                                <?= $match["Nomequipe1"] ?>
+                            </span>
+                        </div>
+
+                        <span class="font-league text-xl font-black italic text-indigo-400">
+                            VS
+                        </span>
+
+                        <div class="text-center">
+                            <img src="<?= $match["logoEquipe2"] ?>" class="w-14 h-14 mx-auto mb-2">
+                            <span class="font-league text-[10px] font-bold">
+                                <?= $match["Nomequipe2"] ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Infos -->
+                    <div class="flex flex-col gap-3 text-xs font-semibold text-slate-300 flex-1">
+                        <div>
+                            <i class="far fa-calendar-alt text-indigo-400 mr-2"></i>
+                            <?= $match["date"] ?> • <?= substr($match["heure"], 0, 5) ?>
+                        </div>
+                        <div>
+                            <i class="fas fa-map-marker-alt text-indigo-400 mr-2"></i>
+                            <?= $match["lieu"] ?>
+                        </div>
+                    </div>
+
+                    <!-- Action -->
+                    <div>
+                        <a href="./frontend/detail-match.php?id=<?= $match["id"] ?>"
+                           class="inline-block bg-indigo-500 text-black px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition">
+                            Voir Détails
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Glow -->
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition pointer-events-none"
+                     style="box-shadow: inset 0 0 60px rgba(99,102,241,0.25);"></div>
+            </div>
+        <?php }} ?>
+    </div>
+</section>
 
     <!-- Match Grid Section -->
     <main id="matchs" class="max-w-[1400px] mx-auto w-full px-6 py-24">

@@ -3,18 +3,23 @@
  
  require_once '../../classes/Auth.php';
 
+$erreur="";
+
  if (isset($_POST['connecter'])) {
     if (!empty($_POST['email']) && !empty($_POST['password']) ) {
         $user=new Auth();
         // les setter modifier
         // $user->setEmail($_POST['email']);
         // $user->setPassword($_POST['password']);
-        
-        if ($user->login($_POST['email'],$_POST['password'])) {
-            $_SESSION['user_id']=$user->getId();
-            $_SESSION['role']=$user->getRole();
-            // C:\laragon\www\BuyMatch\index.php
-            header("Location: /BuyMatch/index.php");
+        try{
+            if ($user->login($_POST['email'],$_POST['password'])) {
+                $_SESSION['user_id']=$user->getId();
+                $_SESSION['role']=$user->getRole();
+                // C:\laragon\www\BuyMatch\index.php
+                header("Location: /BuyMatch/index.php");
+            }
+        }catch(Exception $e){
+            $erreur=$e->getMessage();
         }
     }
     echo $_SESSION['role'];
@@ -48,7 +53,16 @@
                     <h2 class="mt-8 text-3xl font-black italic font-league text-white uppercase italic">Bienvenue <span class="text-indigo-500">Champion</span></h2>
                     <p class="mt-2 text-sm text-slate-400 font-light">Accédez à vos billets et aux exclusivités de la ligue.</p>
                 </div>
-
+                <!-- <div class=""><?php $erreur?$erreur:''?></div> -->
+                 <?php if($erreur){
+                 ?>
+                <div class="mb-4 p-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 text-rose-400 flex items-center gap-3">
+                    <i class="fa-solid fa-circle-exclamation text-xl"></i>
+                    <span class="text-sm font-semibold italic">
+                        <?= $erreur ?>
+                    </span>
+                </div>
+                <?php }?>
                 <form  method="POST" class="space-y-6">
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Adresse Email</label>

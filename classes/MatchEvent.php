@@ -175,6 +175,16 @@ class MatchEvent{
 
         return $nbr["nbr"];
     }
+
+    public function filterMatchs($lieu){
+        $req=$this->pdo->prepare("SELECT *  from matchs where lieu=?")           ;
+        $req->execute([
+                $lieu,
+        ]);
+        return $req->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
     
 }
 ?>

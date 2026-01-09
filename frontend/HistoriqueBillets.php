@@ -1,7 +1,8 @@
 <?php
 require '../session.php';
 require '../classes/Billet.php';
-$rolePage="acheteur";
+// $rolePage="acheteur";
+checkRole(['acheteur']);
 $user_id=$_SESSION["user_id"];
 $billet=new Billet();
 // echo $user_id;
@@ -47,69 +48,11 @@ $billetVenu=$billet->BilletPasse($user_id);
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <!-- Navbar Premium -->
-    <nav class="glass sticky top-0 z-50 px-6 py-4 border-b border-white/5">
-        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center rotate-3 shadow-lg shadow-indigo-500/20">
-                    <i class="fas fa-trophy text-white"></i>
-                </div>
-                <span class="font-league text-2xl font-black italic italic">ELITE<span class="text-indigo-500">STADIUM</span></span>
-            </div>
-            
-            <div class="hidden md:flex items-center space-x-10 text-xs font-bold uppercase tracking-[0.2em]">
-                <a href="index.php" class="text-indigo-400">Matchs</a>
-                <a href="#" class="hover:text-indigo-400 transition">Calendrier</a>
-                <a href="#" class="hover:text-indigo-400 transition">Stades</a>
-            </div>
+        <?php require_once '../frontend/composant/nav.php'?>
 
-            <div class="flex items-center gap-6">
-                <a href="login.php" class="text-xs font-bold hover:text-indigo-400 transition">CONNEXION</a>
-                <a href="register.php" class="btn-gradient px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg shadow-indigo-500/20">S'inscrire</a>
-            </div>
-        </div>
-    </nav>
 
     <main class="flex-grow flex flex-col lg:flex-row">
         
-        <!-- Sidebar Tech-Design -->
-        <aside class="w-full lg:w-72 glass border-r border-white/5 flex-shrink-0">
-            <div class="p-8">
-                <div class="flex items-center gap-4 mb-12 p-4 glass rounded-2xl">
-                    <div class="relative">
-                        <img src="https://ui-avatars.com/api/?name=Ahmed+Bennani&background=6366f1&color=fff" class="w-12 h-12 rounded-xl" alt="Profile">
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-[#05070a] rounded-full"></div>
-                    </div>
-                    <div>
-                        <p class="font-league text-sm font-bold">Ahmed B.</p>
-                        <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded font-black uppercase">Acheteur</span>
-                    </div>
-                </div>
-
-                <nav class="space-y-2">
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4 px-4">Menu Principal</p>
-                    <a href="#" class="sidebar-item active flex items-center gap-4 p-4 rounded-xl text-sm font-bold transition">
-                        <i class="fas fa-ticket-alt w-5 text-indigo-500"></i> Mes Billets
-                    </a>
-                    <a href="HistoriqueBillets.php" class="sidebar-item flex items-center gap-4 p-4 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition">
-                        <i class="fas fa-history w-5"></i> Historique
-                    </a>
-                    <a href="#" class="sidebar-item flex items-center gap-4 p-4 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition">
-                        <i class="fas fa-heart w-5"></i> Favoris
-                    </a>
-                    <a href="#" class="sidebar-item flex items-center gap-4 p-4 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition">
-                        <i class="fas fa-user-cog w-5"></i> Mon Profil
-                    </a>
-                    
-                    <div class="pt-10">
-                        <a href="#" class="flex items-center gap-4 p-4 rounded-xl text-sm font-bold text-red-400 hover:bg-red-500/10 transition">
-                            <i class="fas fa-sign-out-alt w-5"></i> Déconnexion
-                        </a>
-                    </div>
-                </nav>
-            </div>
-        </aside>
-
         <!-- Main Content (Dashboard / Matchs) -->
         <div class="flex-1 p-6 lg:p-12 overflow-y-auto">
             
@@ -158,11 +101,11 @@ $billetVenu=$billet->BilletPasse($user_id);
                                 <!-- <div class="w-8 h-8 rounded-full border-2 border-[#05070a] bg-slate-800 flex items-center justify-center text-[10px] font-bold">VIP</div> -->
                             </div>
                             <div class="flex gap-3">
-                                <button class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition text-indigo-400" title="PDF">
+                                <!-- <button class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition text-indigo-400" title="PDF">
                                     <i class="fas fa-file-pdf"></i>
-                                </button>
-                                <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 rounded-xl text-xs font-black uppercase transition shadow-lg shadow-indigo-500/20">
-                                    Afficher QR
+                                </button> -->
+                                <button class=" w-12 h-12 bg-indigo-600 hover:bg-indigo-500 text-white px-6 rounded-xl text-xs font-black uppercase transition shadow-lg shadow-indigo-500/20">
+                                    <i class="fas fa-file-pdf"></i>
                                 </button>
                             </div>
                         </div>
@@ -174,20 +117,8 @@ $billetVenu=$billet->BilletPasse($user_id);
         </div>
     </main>
 
-    <!-- Footer Simple & Dark -->
-    <!-- <footer class="bg-black/50 backdrop-blur-md border-t border-white/5 py-10 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-4 grayscale opacity-50">
-                <span class="font-league text-xl font-black italic italic">ELITE<span class="text-indigo-500">STADIUM</span></span>
-            </div>
-            <p class="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em]">© 2024 Elite Stadium Pass. All Professional Rights Reserved.</p>
-            <div class="flex gap-6 text-slate-500">
-                <a href="#" class="hover:text-white transition"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
-    </footer> -->
+            <?php require_once '../frontend/composant/footer.php'?>
+
 
     <!-- Native JS pour petites interactions -->
     <script>

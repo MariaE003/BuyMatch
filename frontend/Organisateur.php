@@ -1,8 +1,8 @@
 <?php
 require '../session.php';
 require '../classes/MatchEvent.php';
-$rolePage = "organisateur";
-
+// $rolePage = "organisateur";
+checkRole(['organisateur']);
 $id_user = $_SESSION['user_id'];
 $erreur='';
 if (isset($_POST["send"])) {
@@ -100,7 +100,6 @@ if (isset($_POST["send"])) {
 </head>
 <body class="flex h-screen overflow-hidden p-0">
 
-    <?php if(file_exists('./composant/aside.php')) require './composant/aside.php'; ?>
 
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
         

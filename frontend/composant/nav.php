@@ -12,10 +12,17 @@ require_once __DIR__.'/../../session.php';
             </div>
             
             <div class="hidden md:flex items-center space-x-10 text-[10px] font-black uppercase tracking-[0.2em]">
-                <a href="index.php" class="text-indigo-400">Matchs</a>
-                <!-- <a href="#" class="hover:text-indigo-400 transition">Calendrier</a> -->
-                <!-- <a href="#" class="hover:text-indigo-400 transition">Stades</a>
-                <a href="#" class="hover:text-indigo-400 transition">Aide</a> -->
+                <a href="/../BuyMatch/index.php" class="text-indigo-400">Matchs</a>
+
+                <a href="/../BuyMatch/frontend/DashboardOrganisateur.php" class="hover:text-indigo-400 transition <?= $_SESSION["role"] &&  $_SESSION["role"]==="organisateur" ?'flex':'hidden'?>">Dashboard</a>
+                <a href="/../BuyMatch/frontend/DashboardAdministrateur.php" class="hover:text-indigo-400 transition <?= $_SESSION["role"] &&  $_SESSION["role"]==="admin" ?'flex':'hidden'?>">Dashboard</a>
+
+                <a href="/../BuyMatch/frontend/Organisateur.php" class="hover:text-indigo-400 transition <?= $_SESSION["role"] && $_SESSION["role"]==="organisateur"  ?'flex':'hidden'?>">Crrer Match</a>
+
+                <a href="/../BuyMatch/frontend/Acheteur.php" class="hover:text-indigo-400 transition <?= $_SESSION["role"] && $_SESSION["role"]==="acheteur"  ?'flex':'hidden'?>">mes billets</a>
+                <a href="/../BuyMatch/frontend/HistoriqueBillets.php" class="hover:text-indigo-400 transition <?= $_SESSION["role"] && $_SESSION["role"]==="acheteur"  ?'flex':'hidden'?>">historique des billets</a>
+
+                <a href="/../BuyMatch/frontend/profil.php" class="hover:text-indigo-400 transition <?= $_SESSION["role"] &&  $_SESSION["role"]==="acheteur" || $_SESSION["role"]==="organisateur"  ?'flex':'hidden'?>">Profil</a>
             </div>
 
             <div class="flex items-center gap-6">

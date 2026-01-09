@@ -2,7 +2,7 @@
 require '../session.php';
 require '../classes/Auth.php'; 
 // $rolePage = "organisateur"; 
-
+checkRole(['organisateur','acheteur']);
 $idUser = $_SESSION["user_id"];
 $user= new Auth();
 $userData = $user->affichierInfo($idUser); // Méthode à adapter selon votre classe
@@ -73,10 +73,9 @@ if (isset($_POST["send"])) {
         }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden p-0">
+<body class=" h-screen overflow-y-auto p-0">
 
-    <!-- SIDEBAR -->
-    <?php require './composant/aside.php'; ?>
+        <?php require_once '../frontend/composant/nav.php'; ?>
 
     <!-- MAIN WORKSPACE -->
     <div class="flex-1 flex flex-col min-w-0">
@@ -192,7 +191,9 @@ if (isset($_POST["send"])) {
 
             </form>
         </main>
+        
     </div>
+    <?php require_once '../frontend/composant/footer.php'; ?>
 
     <script>
         // Preview de l'image avant l'upload

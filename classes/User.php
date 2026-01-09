@@ -55,7 +55,7 @@ abstract class User{
 
     public function login($email,$passw){
         // virifier l'emailand pw
-        $req=$this->pdo->prepare("SELECT * from users where email=:email");
+        $req=$this->pdo->prepare("SELECT * from users where email=:email and statut='activer'");
         $req->execute([
             ":email"=>$email,
         ]);
@@ -66,6 +66,8 @@ abstract class User{
             $this->email=$user["email"];
             $this->role=$user["role"];
             return $user;
+        }else{
+            throw new Exception("Les informations de connexion sont incorrectes ou votre compte a été désactivé. Veuillez réessayer.");
         }
 
         return false;

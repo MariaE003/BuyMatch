@@ -2,15 +2,18 @@
 require_once '../session.php';
 require_once '../classes/MatchEvent.php';
 require_once '../classes/Billet.php';
+require_once '../classes/Auth.php';
 
-$rolePage="admin";
-
-// var_dump($_POST);
-// exit;
+checkRole(['admin']);
 
 $match=new MatchEvent();
 $matchEnAttent=$match->AffichierTousMatchs();
 
+
+
+$user=new Auth();
+
+$AfficherUsers=$user->affichierTousInfo();
 
 if (isset($_POST["action"])) {
     $idMatch=$_POST["idMatch"];
@@ -75,22 +78,24 @@ $VentesBrutes=$bill->VentesBrutes();
 </head>
 <body class="flex h-screen p-6 overflow-hidden">
 
-    <!-- Sidebar : Mini Slim Navigation -->
+    <!-- sidebar  -->
     <aside class="w-20 glass-panel rounded-[2.5rem] flex flex-col items-center py-8 gap-10 flex-shrink-0">
-        <div class="text-indigo-500 text-2xl rotate-3"><i class="fas fa-bolt"></i></div>
+        <a href="/../BuyMatch/index.php" class="text-indigo-500 text-2xl rotate-3"><i class="fas fa-bolt"></i></a>
         <nav class="flex flex-col gap-8">
-            <a href="#" class="p-4 rounded-2xl bg-indigo-500/10 text-indigo-400" title="Dashboard"><i class="fas fa-th-large text-xl"></i></a>
-            <a href="#" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Matchs"><i class="fas fa-gamepad text-xl"></i></a>
-            <a href="#" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Utilisateurs"><i class="fas fa-user-shield text-xl"></i></a>
-            <a href="#" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Paramètres"><i class="fas fa-sliders text-xl"></i></a>
+            <a href="../frontend/DashboardAdministrateur.php" class="p-4 rounded-2xl bg-indigo-500/10 text-indigo-400" title="Dashboard"><i class="fas fa-th-large text-xl"></i></a>
+            <a href="../frontend/GestionUtilisateurs.php" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Utilisateurs"><i class="fas fa-user-shield text-xl"></i></a>
         </nav>
-        <a href="logout.php" class="mt-auto p-4 rounded-2xl text-rose-500 hover:bg-rose-500/10 transition"><i class="fas fa-power-off text-xl"></i></a>
+        <form action="" method="POST">
+
+            <button type="submit" href="logout.php" name="logout"  class="mt-auto p-4 rounded-2xl text-rose-500 hover:bg-rose-500/10 transition"><i class="fas fa-power-off text-xl"></i></button>
+
+        </form>
     </aside>
 
-    <!-- Main Workspace -->
+    <!-- main  -->
     <main class="flex-1 ml-6 flex flex-col gap-6 overflow-hidden">
         
-        <!-- Header Top -->
+        <!-- header  -->
         <header class="flex justify-between items-center px-4">
             <div>
                 <h1 class="font-league text-2xl font-black italic tracking-tighter">TACTICAL<span class="text-indigo-500">HUB</span></h1>
@@ -101,10 +106,10 @@ $VentesBrutes=$bill->VentesBrutes();
             </div>
             
             <div class="flex items-center gap-6">
-                <div class="glass-panel px-4 py-2 rounded-2xl flex items-center gap-3">
+                <!-- <div class="glass-panel px-4 py-2 rounded-2xl flex items-center gap-3">
                     <i class="fas fa-search text-slate-500 text-xs"></i>
                     <input type="text" placeholder="Global Search..." class="bg-transparent border-none outline-none text-xs w-48 font-medium">
-                </div>
+                </div> -->
                 <div class="flex items-center gap-4 border-l border-white/5 pl-6">
                     <div class="text-right">
                         <p class="text-xs font-bold">Admin_Core</p>
@@ -196,17 +201,6 @@ $VentesBrutes=$bill->VentesBrutes();
 
                             ?>
 
-                        <!-- Match Item 2 -->
-                        <!-- <div class="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-3xl">
-                            <div class="flex items-center gap-6">
-                                <div class="w-12 h-12 glass-panel rounded-2xl flex items-center justify-center font-league italic font-black text-slate-500">VS</div>
-                                <div>
-                                    <p class="text-xs font-black uppercase italic tracking-tighter">Raja CA <span class="text-slate-500 px-2 font-normal">X</span> RS Berkane</p>
-                                    <p class="text-[10px] text-slate-500 mt-1">Organisateur : <span class="text-white">FRMF</span> • Stade Mohammed V</p>
-                                </div>
-                            </div>
-                            <button class="p-3 rounded-xl bg-white/5 text-slate-500"><i class="fas fa-ellipsis-v"></i></button>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -220,43 +214,26 @@ $VentesBrutes=$bill->VentesBrutes();
                     <div class="space-y-4">
                         <div class="p-4 bg-white/5 rounded-2xl flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"><i class="fas fa-user text-[10px]"></i></div>
+                                <img src="<?=$AfficherUsers[0]['image']?>" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center" alt="">
+                                <!-- <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"><i class="fas fa-user text-[10px]"></i></div> -->
                                 <div>
-                                    <p class="text-[11px] font-bold">Hamid Elidrissi</p>
-                                    <p class="text-[9px] text-slate-500 uppercase font-black italic">Organisateur</p>
+                                    <p class="text-[11px] font-bold"><?=$AfficherUsers[0]['nom']?></p>
+                                    <p class="text-[9px] text-slate-500 uppercase font-black italic"><?=$AfficherUsers[0]['role']?></p>
                                 </div>
+                                <!-- <div><?=$AfficherUsers[0]['statut']?></div> -->
+                                <span class="text-[9px] font-black uppercase bg-indigo-500/10 text-indigo-400 px-3 py-1 rounded-lg border border-indigo-500/20"><?=$AfficherUsers[0]['statut']?></span>
+
                             </div>
-                            <!-- <div class="flex gap-2">
-                                <button class="w-7 h-7 bg-indigo-500/20 text-indigo-400 rounded-lg text-[10px]"><i class="fas fa-sync"></i></button>
-                                <button class="w-7 h-7 bg-rose-500/20 text-rose-500 rounded-lg text-[10px]"><i class="fas fa-ban"></i></button>
-                            </div> -->
+
                         </div>
                         <div class="p-4 bg-white/5 rounded-2xl flex items-center justify-between opacity-50">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center"><i class="fas fa-user text-[10px]"></i></div>
                                 <p class="text-[11px] font-bold italic">User_Banned_#09</p>
                             </div>
-                            <!-- <button class="text-[9px] font-black uppercase text-indigo-400">Restaurer</button> -->
                         </div>
                     </div>
                     <a href="./GestionUtilisateurs.php" class="w-full mt-6 ml-17  py-4 rounded-2xl border border-dashed border-white/10 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:border-indigo-500 hover:text-indigo-400 transition mt-10">Base de données complète</a>
-                </div>
-
-                <!-- Modération Avis (Bonus Section) -->
-                <div class="glass-panel rounded-[2.5rem] p-8 border-t-2 border-rose-500/20">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-league text-xs font-black italic uppercase tracking-widest italic text-rose-500">Alertes Avis</h3>
-                        <span class="text-[10px] bg-rose-500 text-white px-2 py-0.5 rounded-full font-bold">24</span>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="text-[10px] p-4 glass-panel border-l-2 border-rose-500 rounded-xl relative overflow-hidden">
-                            <p class="text-slate-400 leading-relaxed italic">"Signalement: Langage offensif détecté dans les commentaires du match #88."</p>
-                            <div class="mt-3 flex justify-between items-center relative z-10">
-                                <span class="text-[8px] font-black text-rose-400 uppercase tracking-tighter italic">Urgent : Modération requise</span>
-                                <button class="bg-white/10 p-2 rounded-lg hover:bg-rose-500 transition"><i class="fas fa-trash-alt text-[10px]"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>

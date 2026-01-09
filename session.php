@@ -11,8 +11,16 @@ if (isset($_POST["logout"])) {
     exit();
 }
 // pour les role
-if (isset($rolePage) && $_SESSON["role"] !== $rolePage) {
-    header("Location: index.php");
-    exit() ;  
+function checkRole($roles =[]){
+    
+   if (!isset($_SESSION["role"])) {
+        header("Location: frontend/auth/login.php");
+        exit();
+    }
+
+    if (!in_array($_SESSION["role"], $roles)) {
+        header("Location: /BuyMatch/index.php"); 
+        exit();
+    }
 }
 ?>

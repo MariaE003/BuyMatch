@@ -3,6 +3,8 @@ require_once '../session.php';
 require_once '../classes/Auth.php';
 
 
+checkRole(['admin']);
+
 // echo $user_id;
 $user=new Auth();
 
@@ -62,16 +64,19 @@ if (isset($_POST["activeD"])) {
 </head>
 <body class="flex h-screen p-6 overflow-hidden">
 
-    <!-- Sidebar Navigation -->
+    <!-- sidebar -->
     <aside class="w-20 glass-panel rounded-[2.5rem] flex flex-col items-center py-8 gap-10 flex-shrink-0">
-        <div class="text-indigo-500 text-2xl rotate-3"><i class="fas fa-bolt"></i></div>
+        <a href="/../BuyMatch/index.php" class="text-indigo-500 text-2xl rotate-3"><i class="fas fa-bolt"></i></a>
         <nav class="flex flex-col gap-8">
-            <a href="#" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Dashboard"><i class="fas fa-th-large text-xl"></i></a>
-            <a href="#" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Matchs"><i class="fas fa-gamepad text-xl"></i></a>
-            <a href="#" class="p-4 rounded-2xl bg-indigo-500/10 text-indigo-400" title="Utilisateurs"><i class="fas fa-user-shield text-xl"></i></a>
-            <a href="#" class="p-4 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Paramètres"><i class="fas fa-sliders text-xl"></i></a>
+            <a href="../frontend/DashboardAdministrateur.php" class="p-4 rounded-2xl  text-indigo-400" title="Dashboard"><i class="fas fa-th-large text-xl"></i></a>
+            <a href="../frontend/GestionUtilisateurs.php" class="p-4 bg-indigo-500/10 rounded-2xl text-slate-500 hover:bg-white/5 transition" title="Utilisateurs"><i class="fas fa-user-shield text-xl"></i></a>
         </nav>
-        <a href="#" class="mt-auto p-4 rounded-2xl text-rose-500 hover:bg-rose-500/10 transition"><i class="fas fa-power-off text-xl"></i></a>
+        <form action="" method="POST">
+            
+            <button type="submit" href="logout.php" name="logout"  class="mt-auto p-4 rounded-2xl text-rose-500 hover:bg-rose-500/10 transition"><i class="fas fa-power-off text-xl"></i></button>
+
+        </form>
+
     </aside>
 
     <!-- Main Workspace -->
@@ -88,10 +93,10 @@ if (isset($_POST["activeD"])) {
             </div>
             
             <div class="flex items-center gap-6">
-                <div class="glass-panel px-4 py-2 rounded-2xl flex items-center gap-3 border border-indigo-500/20">
+                <!-- <div class="glass-panel px-4 py-2 rounded-2xl flex items-center gap-3 border border-indigo-500/20">
                     <i class="fas fa-search text-indigo-400 text-xs"></i>
                     <input type="text" placeholder="Search accounts..." class="bg-transparent border-none outline-none text-xs w-64 font-medium text-white placeholder:text-slate-600">
-                </div>
+                </div> -->
                 <div class="flex items-center gap-4 border-l border-white/5 pl-6">
                     <div class="text-right">
                         <p class="text-xs font-bold">Admin_Core</p>
@@ -115,10 +120,6 @@ if (isset($_POST["activeD"])) {
                 <h3 class="text-2xl font-black font-league text-indigo-400"><?= $user->nbrOrg()?></h3>
             </div>
 
-            <!-- <div class="glass-panel p-6 rounded-[2rem]">
-                <p class="text-[10px] font-black text-slate-500 uppercase italic mb-1">Nouveaux (24h)</p>
-                <h3 class="text-2xl font-black font-league text-emerald-500">+12</h3>
-            </div> -->
 
             <div class="glass-panel p-6 rounded-[2rem] border-l-4 border-rose-500">
                 <p class="text-[10px] font-black text-slate-500 uppercase italic mb-1">Bannis</p>
@@ -130,10 +131,10 @@ if (isset($_POST["activeD"])) {
         <div class="flex-1 glass-panel rounded-[2.5rem] p-8 overflow-hidden flex flex-col">
             <div class="flex justify-between items-center mb-8">
                 <h3 class="font-league text-xl font-black italic tracking-widest uppercase">Master <span class="text-indigo-500">Index</span></h3>
-                <div class="flex gap-4">
+                <!-- <div class="flex gap-4">
                     <button class="text-[10px] font-black uppercase bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-white/10 transition">Filtres Avancés</button>
                     <button class="text-[10px] font-black uppercase bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-indigo-600 transition">+ Ajouter Utilisateur</button>
-                </div>
+                </div> -->
             </div>
 
             <!-- Table Header -->
@@ -185,7 +186,7 @@ if (isset($_POST["activeD"])) {
             </div>
 
             <!-- Footer Pagination -->
-            <div class="mt-6 flex justify-between items-center px-4">
+            <!-- <div class="mt-6 flex justify-between items-center px-4">
                 <p class="text-[10px] text-slate-500 font-black uppercase italic">Affichage 1-10 de 2,840 comptes</p>
                 <div class="flex gap-2">
                     <button class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-500 hover:text-white transition"><i class="fas fa-chevron-left text-[10px]"></i></button>
@@ -194,7 +195,7 @@ if (isset($_POST["activeD"])) {
                     <button class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 text-[10px] font-black hover:bg-white/10 transition">3</button>
                     <button class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 hover:bg-indigo-500 hover:text-white transition"><i class="fas fa-chevron-right text-[10px]"></i></button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </main>
 
